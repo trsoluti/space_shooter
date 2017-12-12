@@ -1,3 +1,3 @@
-mod background;
+mod ship;
 
-pub use self::background::Background;
+pub use self::ship::Ship;

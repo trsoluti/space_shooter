@@ -1,8 +1,8 @@
 
 use amethyst::ecs::{Component, DenseVecStorage};
 
-pub struct Background;
+pub struct Ship;
 
-impl Component for Background {
+impl Component for Ship {
     type Storage = DenseVecStorage<Self>;
 }

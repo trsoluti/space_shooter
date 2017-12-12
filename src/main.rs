@@ -3,6 +3,7 @@ extern crate amethyst;
 mod state;
 mod components;
 mod entities;
+mod bundle;
 
 use amethyst::prelude::*;
 use amethyst::core::transform::TransformBundle;
@@ -10,6 +11,7 @@ use amethyst::renderer::{DisplayConfig, RenderBundle, RenderSystem, Pipeline, St
 use amethyst::ui::{DrawUi, UiBundle};
 
 use state::SpriteState;
+use bundle::GameBundle;
 
 const BACKGROUND_COLOUR: [f32; 4] = [16.0, 16.0, 16.0, 0.0]; // dark grey
 
@@ -27,7 +29,8 @@ fn run() -> Result<(), amethyst::Error> {
         SpriteState)?
         .with_bundle(RenderBundle::new())?
         .with_bundle(UiBundle::new())?
-        .with_bundle(TransformBundle::new())?;
+        .with_bundle(TransformBundle::new())?
+        .with_bundle(GameBundle)?;
 
     let pipe = {
         let loader = game.world.read_resource();
