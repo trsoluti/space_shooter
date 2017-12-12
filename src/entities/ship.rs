@@ -1,16 +1,27 @@
 
+
 use amethyst::ecs::{Entity, World};
 use amethyst::core::cgmath::Vector3;
 use amethyst::renderer::{PngFormat, Texture, PosTex, Mesh, Material, MaterialDefaults};
 use amethyst::assets::{AssetStorage, Loader};
 use amethyst::core::transform::{LocalTransform, Transform};
 
-pub fn initialise_background(world: &mut World) -> Entity {
+use super::background::create_png_vertices;
+
+// CONSTANTS WHICH DRIVE OUR SYSTEM:
+//const ARENA_HEIGHT: f32 = 100.0;
+//const ARENA_WIDTH: f32 = 100.0;
+
+//const BALL_RADIUS: f32 = 2.5;
+//const BALL_COLOUR: [f32; 4] = [0.0, 0.0, 1.0, 1.0];
+
+/// Initialises one ball in the middle-ish of the arena.
+pub fn initialise_ship(world: &mut World) -> Entity {
     let (mesh, background) = {
         let loader = world.read_resource::<Loader>();
 
         let background_texture = loader.load(
-            "texture/background.png",
+            "texture/spaceship.png",
             PngFormat,
             Default::default(),
             (),
@@ -24,7 +35,7 @@ pub fn initialise_background(world: &mut World) -> Entity {
             ..mat_defaults.0.clone()
         };
 
-        let vertices = create_png_vertices(0.0, 0.0,1300.0,1024.0);
+        let vertices = create_png_vertices(0.0, 0.0,103.0,84.0);
 
         let mesh = loader.load_from_data(
             vertices.into(),
@@ -34,7 +45,7 @@ pub fn initialise_background(world: &mut World) -> Entity {
     };
 
     let mut local_transform = LocalTransform::default();
-    local_transform.translation = Vector3::new(0.0, 0.0, 0.0);
+    local_transform.translation = Vector3::new(10.0, 10.0, 0.0);
     local_transform.scale = Vector3::new(0.1, 0.1, 1.0);
 
     world
@@ -44,38 +55,4 @@ pub fn initialise_background(world: &mut World) -> Entity {
         .with(local_transform)
         .with(Transform::default())
         .build()
-}
-
-pub fn create_png_vertices(left: f32, bottom: f32, right:f32, top:f32) -> Vec<PosTex> {
-    let width = right - left;
-    let height = top - bottom;
-    let ratio = width / height;
-    let tex_right = ratio;
-    let tex_top = 1.0;
-    vec![
-        PosTex {
-            position: [left, bottom, 0.0],
-            tex_coord: [0.0, 0.0],
-        },
-        PosTex {
-            position: [right, bottom, 0.0],
-            tex_coord: [1.0, 0.0],
-        },
-        PosTex {
-            position: [left, top, 0.0],
-            tex_coord: [0.0, 1.0],
-        },
-        PosTex {
-            position: [right, top, 0.0],
-            tex_coord: [1.0, 1.0],
-        },
-        PosTex {
-            position: [left, top, 0.],
-            tex_coord: [0.0, 1.0],
-        },
-        PosTex {
-            position: [right, bottom, 0.0],
-            tex_coord: [1.0, 0.0],
-        },
-    ]
 }
