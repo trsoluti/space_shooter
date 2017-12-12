@@ -1,14 +1,17 @@
 extern crate amethyst;
 
+mod config;
 mod state;
+mod bundle;
 mod components;
 mod entities;
-mod bundle;
+mod systems;
 
 use amethyst::prelude::*;
 use amethyst::core::transform::TransformBundle;
 use amethyst::renderer::{DisplayConfig, RenderBundle, RenderSystem, Pipeline, Stage, DrawFlat, PosTex};
 use amethyst::ui::{DrawUi, UiBundle};
+use amethyst::input::InputBundle;
 
 use state::SpriteState;
 use bundle::GameBundle;
@@ -22,11 +25,21 @@ fn run() -> Result<(), amethyst::Error> {
     );
     let display_config = DisplayConfig::load(&display_config_path);
 
+    let key_bindings_path = format!(
+        "{}/resources/input.ron",
+        env!("CARGO_MANIFEST_DIR")
+    );
+
     let resources_path = format!("{}/assets", env!("CARGO_MANIFEST_DIR"));
 
     let game = Application::build(
         resources_path,
         SpriteState)?
+        .with_bundle(
+            InputBundle::<String, String>::new().with_bindings_from_file(
+                &key_bindings_path
+            ),
+        )?
         .with_bundle(RenderBundle::new())?
         .with_bundle(UiBundle::new())?
         .with_bundle(TransformBundle::new())?

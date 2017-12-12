@@ -4,6 +4,7 @@ use amethyst::core::bundle::{ECSBundle, Result};
 use amethyst::ecs::{DispatcherBuilder, World};
 
 use components::Ship;
+use systems::ShipSystem;
 
 /// A bundle is a convenient way to initialise related resources, components and systems in a
 /// world. This bundle prepares the world for a game of pong.
@@ -15,6 +16,7 @@ impl<'a, 'b> ECSBundle<'a, 'b> for GameBundle {
 
         Ok(
             builder
+                .add(ShipSystem, "ship_system", &["input_system"])
         )
     }
 }
