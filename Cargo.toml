@@ -1,0 +1,7 @@
+[package]
+name = "sprite"
+version = "0.1.0"
+authors = ["trsoluti <thomas_odell@trsolutions.biz>"]
+
+[dependencies]
+amethyst = { path = "../../../Rust/amethyst" }
