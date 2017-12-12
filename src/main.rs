@@ -1,4 +1,6 @@
 extern crate amethyst;
+#[macro_use]
+extern crate lazy_static;
 
 mod config;
 mod state;
@@ -19,6 +21,8 @@ use bundle::GameBundle;
 const BACKGROUND_COLOUR: [f32; 4] = [16.0, 16.0, 16.0, 0.0]; // dark grey
 
 fn run() -> Result<(), amethyst::Error> {
+    let _ = &config::GAME_CONFIGURATION; // initialises game constants
+
     let display_config_path = format!(
         "{}/resources/display_config.ron",
         env!("CARGO_MANIFEST_DIR")

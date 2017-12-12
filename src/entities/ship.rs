@@ -6,7 +6,8 @@ use amethyst::core::transform::{LocalTransform, Transform};
 use amethyst::renderer::ScreenDimensions;
 
 use super::png_mesh_and_material;
-use config::SHIP_VELOCITY;
+
+use config::GAME_CONFIGURATION;
 
 use components::Ship;
 
@@ -26,7 +27,7 @@ pub fn initialise_ship(world: &mut World) -> Entity {
         .create_entity()
         .with(mesh)
         .with(background)
-        .with(Ship { velocity: SHIP_VELOCITY, width: 103.0*0.1, height: 84.0 * 0.1})
+        .with(Ship { velocity: GAME_CONFIGURATION.ship_velocity, width: 103.0*0.1, height: 84.0 * 0.1})
         .with(local_transform)
         .with(Transform::default())
         .build()
