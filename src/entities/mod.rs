@@ -1,7 +1,7 @@
 mod background;
 mod camera;
 mod ship;
-mod enemy;
+mod asteroid;
 
 use amethyst::ecs::World;
 use amethyst::renderer::{PngFormat, Texture, PosTex, Mesh, Material, MaterialDefaults};
@@ -10,7 +10,7 @@ use amethyst::assets::{AssetStorage, Loader, Handle};
 pub fn initialise_entities(world: &mut World) {
     background::initialise_background(world);
     ship::initialise_ship(world);
-    enemy::enemy(world);
+    asteroid::initialise_asteroids(world);
     camera::initialise_camera(world);
 }
 

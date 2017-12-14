@@ -13,21 +13,21 @@ use components::Ship;
 
 /// Initialises one ball in the middle-ish of the arena.
 pub fn initialise_ship(world: &mut World) -> Entity {
-    let (mesh, background) = png_mesh_and_material("texture/spaceship.png", [103.0,84.0], world);
-    let (width, height) = {
+    let (mesh, background) = png_mesh_and_material("PNG/playerShip4_purple.png", [105.0,83.0], world);
+    let width = {
         let dim = world.read_resource::<ScreenDimensions>();
-        (dim.width(), dim.height())
+        dim.width()
     };
 
     let mut local_transform = LocalTransform::default();
-    local_transform.translation = Vector3::new(width/2.0, height-8.4, 0.0);
+    local_transform.translation = Vector3::new(width/2.0, 0.0, 0.0);
     local_transform.scale = Vector3::new(0.1, 0.1, 1.0);
 
     world
         .create_entity()
         .with(mesh)
         .with(background)
-        .with(Ship { velocity: GAME_CONFIGURATION.ship_velocity, width: 103.0*0.1, height: 84.0 * 0.1})
+        .with(Ship { velocity: GAME_CONFIGURATION.ship_velocity, width: 105.0*0.1, height: 83.0 * 0.1})
         .with(local_transform)
         .with(Transform::default())
         .build()

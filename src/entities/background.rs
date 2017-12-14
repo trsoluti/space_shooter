@@ -7,7 +7,7 @@ use super::png_mesh_and_material;
 
 pub fn initialise_background(world: &mut World) -> Entity {
 
-    let (mesh, background) = png_mesh_and_material("texture/background.png", [1300.0, 1024.0], world);
+    let (mesh, background) = png_mesh_and_material("Backgrounds/darkPurple.png", [1024.0, 1024.0], world);
 
     let mut local_transform = LocalTransform::default();
     local_transform.translation = Vector3::new(0.0, 0.0, 0.0);
