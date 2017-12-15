@@ -4,6 +4,7 @@ use amethyst::core::timing::Time;
 use amethyst::core::transform::LocalTransform;
 use amethyst::ecs::{Fetch, Join, System, WriteStorage};
 use amethyst::renderer::ScreenDimensions;
+use rand::thread_rng;
 
 /// This system is responsible for moving the Asteroid according to the user
 /// provided input.
@@ -26,7 +27,10 @@ impl<'s> System<'s> for AsteroidSystem {
             // in an ECS, it's more efficient to re-use entities than to
             // destroy and re-create them.
             if transform.translation[1] < (-asteroid.height) {
-                transform.translation[1] = dimensions.height() + 100.0; // will be some random # (also horizontal position)
+                let mut rng = thread_rng();
+                let local_transform: LocalTransform = asteroid.locate(dimensions.width(), dimensions.height(), &mut rng);
+                transform.translation[0] = local_transform.translation[0];
+                transform.translation[1] = local_transform.translation[1];
             }
         }
     }

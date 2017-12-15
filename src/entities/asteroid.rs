@@ -1,8 +1,8 @@
 
 use amethyst::ecs::{Entity, World};
-use amethyst::core::cgmath::Vector3;
-use amethyst::core::transform::{LocalTransform, Transform};
+use amethyst::core::transform::{Transform};
 use amethyst::renderer::ScreenDimensions;
+use rand::thread_rng;
 
 use super::png_mesh_and_material;
 use config::GAME_CONFIGURATION;
@@ -17,17 +17,17 @@ pub fn initialise_asteroids(world: &mut World) -> Vec<Entity> {
         height: 43.0 * 0.1,
         is_destroyed: false,
     };
-    let screen_height = {
+    let (screen_width, screen_height) = {
         let dim = world.read_resource::<ScreenDimensions>();
-        dim.height()
+        (dim.width(), dim.height())
     };
+
+    let mut rng = thread_rng();
 
     let numbers = 0..;
     let range = numbers.take(100);
-    range.map(|number| {
-        let mut local_transform = LocalTransform::default();
-        local_transform.translation = Vector3::new(number as f32, screen_height + ((number % 12) as f32) * asteroid.height, 0.0);
-        local_transform.scale = Vector3::new(0.1, 0.1, 1.0);
+    range.map(|_number| {
+        let local_transform = asteroid.locate(screen_width, screen_height, &mut rng);
 
         world
         .create_entity()

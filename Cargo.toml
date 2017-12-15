@@ -6,3 +6,4 @@ authors = ["trsoluti <thomas_odell@trsolutions.biz>"]
 [dependencies]
 amethyst = { path = "../../../Rust/amethyst" }
 lazy_static = "*"
+rand = "0.3"

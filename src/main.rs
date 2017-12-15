@@ -1,6 +1,7 @@
 extern crate amethyst;
 #[macro_use]
 extern crate lazy_static;
+extern crate rand;
 
 mod config;
 mod state;
