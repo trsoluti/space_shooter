@@ -27,7 +27,7 @@ pub fn initialise_ship(world: &mut World) -> Entity {
         .create_entity()
         .with(mesh)
         .with(background)
-        .with(Ship { velocity: GAME_CONFIGURATION.ship_velocity, width: 105.0*0.1, height: 83.0 * 0.1})
+        .with(Ship { velocity: GAME_CONFIGURATION.ship_velocity, width: 105.0*0.1, height: 83.0 * 0.1, lives: 3})
         .with(local_transform)
         .with(Transform::default())
         .build()

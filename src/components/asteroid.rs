@@ -11,7 +11,7 @@ pub struct Asteroid {
     pub velocity: f32,
     pub width: f32,
     pub height: f32,
-    pub is_destroyed: bool, // if destroyed, won't respawn
+    pub is_destroyed: bool,
 }
 
 impl Component for Asteroid {

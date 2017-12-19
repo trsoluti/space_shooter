@@ -1,13 +1,12 @@
 
 use amethyst::ecs::{Component, DenseVecStorage};
 
-pub struct Ship {
+pub struct Laser {
     pub velocity: f32,
     pub width: f32,
     pub height: f32,
-    pub lives: i32,
 }
 
-impl Component for Ship {
+impl Component for Laser {
     type Storage = DenseVecStorage<Self>;
 }

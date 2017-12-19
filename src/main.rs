@@ -9,6 +9,7 @@ mod bundle;
 mod components;
 mod entities;
 mod systems;
+mod resources;
 
 use amethyst::prelude::*;
 use amethyst::core::transform::TransformBundle;
@@ -19,7 +20,7 @@ use amethyst::input::InputBundle;
 use state::SpriteState;
 use bundle::GameBundle;
 
-const BACKGROUND_COLOUR: [f32; 4] = [16.0, 16.0, 16.0, 0.0]; // dark grey
+const BACKGROUND_COLOUR: [f32; 4] = [0.25, 0.25, 0.25, 0.0]; // dark grey
 
 fn run() -> Result<(), amethyst::Error> {
     let _ = &config::GAME_CONFIGURATION; // initialises game constants
