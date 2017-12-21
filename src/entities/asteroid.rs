@@ -12,8 +12,8 @@ use components::Asteroid;
 pub fn initialise_asteroids(world: &mut World) -> Vec<Entity> {
     let (mesh, background) = png_mesh_and_material("PNG/Meteors/meteorBrown_med1.png", [43.0,43.0], world);
     let asteroid = Asteroid {
-        velocity: GAME_CONFIGURATION.ship_velocity,
-        width: 43.0*0.1,
+        velocity: GAME_CONFIGURATION.asteroid_velocity,
+        width: 43.0 * 0.1,
         height: 43.0 * 0.1,
         is_destroyed: false,
     };

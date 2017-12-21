@@ -5,6 +5,7 @@ use amethyst::ecs::{DispatcherBuilder, World};
 
 use components::Ship;
 use components::Asteroid;
+use components::Laser;
 use systems::ShipSystem;
 use systems::AsteroidSystem;
 use systems::CollisionSystem;
@@ -18,6 +19,7 @@ impl<'a, 'b> ECSBundle<'a, 'b> for GameBundle {
     fn build(self, world: &mut World, builder: DispatcherBuilder<'a, 'b>) -> Result<DispatcherBuilder<'a, 'b>> {
         world.register::<Ship>();
         world.register::<Asteroid>();
+        world.register::<Laser>();
         world.add_resource(PlayState{ current_state: PlayStateEnum::PlayOngoing});
 
         Ok(

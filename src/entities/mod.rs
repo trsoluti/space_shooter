@@ -2,16 +2,20 @@ mod background;
 mod camera;
 mod ship;
 mod asteroid;
+mod laser;
 
 use amethyst::ecs::World;
 use amethyst::renderer::{PngFormat, Texture, PosTex, Mesh, Material, MaterialDefaults};
 use amethyst::assets::{AssetStorage, Loader, Handle};
+
+pub use self::laser::fire_laser;
 
 pub fn initialise_entities(world: &mut World) {
     background::initialise_background(world);
     ship::initialise_ship(world);
     asteroid::initialise_asteroids(world);
     camera::initialise_camera(world);
+    laser::initialise_laser_resource(world);
 }
 
 pub fn png_mesh_and_material(name: &'static str, png_size: [f32; 2], world: &mut World)-> (Handle<Mesh>, Material) {

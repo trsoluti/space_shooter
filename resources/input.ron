@@ -6,5 +6,6 @@
     ),
   },
   actions: {
+    "fire": [Key(Space)],
   },
 )

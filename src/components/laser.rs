@@ -1,6 +1,7 @@
 
 use amethyst::ecs::{Component, DenseVecStorage};
 
+#[derive(Clone)]
 pub struct Laser {
     pub velocity: f32,
     pub width: f32,

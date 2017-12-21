@@ -13,7 +13,7 @@ use components::Ship;
 
 /// Initialises one ball in the middle-ish of the arena.
 pub fn initialise_ship(world: &mut World) -> Entity {
-    let (mesh, background) = png_mesh_and_material("PNG/playerShip4_purple.png", [105.0,83.0], world);
+    let (mesh, material) = png_mesh_and_material("PNG/playerShip4_purple.png", [105.0,83.0], world);
     let width = {
         let dim = world.read_resource::<ScreenDimensions>();
         dim.width()
@@ -26,7 +26,7 @@ pub fn initialise_ship(world: &mut World) -> Entity {
     world
         .create_entity()
         .with(mesh)
-        .with(background)
+        .with(material)
         .with(Ship { velocity: GAME_CONFIGURATION.ship_velocity, width: 105.0*0.1, height: 83.0 * 0.1, lives: 3})
         .with(local_transform)
         .with(Transform::default())

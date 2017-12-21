@@ -22,9 +22,9 @@ impl Asteroid {
     pub fn locate(&self, screen_width: f32, screen_height: f32, rng: &mut ThreadRng)->LocalTransform {
         let max_width = screen_width - self.width;
         let min_height = screen_height + GAME_CONFIGURATION.wait_for_first_asteroid * GAME_CONFIGURATION.asteroid_velocity;
-        let max_height = min_height + screen_height / GAME_CONFIGURATION.asteroid_velocity;
+        let max_height = min_height +  (screen_height * GAME_CONFIGURATION.asteroid_velocity) / GAME_CONFIGURATION.asteroid_density;
         let pos_x = rng.next_f32()*max_width;
-        let pos_y = rng.next_f32()*(max_height-min_height);
+        let pos_y = min_height + rng.next_f32()*(max_height-min_height);
 
         let mut local_transform = LocalTransform::default();
         local_transform.translation = Vector3::new(pos_x, pos_y, 0.0);
