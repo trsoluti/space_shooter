@@ -6,6 +6,7 @@ pub struct Ship {
     pub width: f32,
     pub height: f32,
     pub lives: i32,
+    pub trigger_reset_timer: f32,
 }
 
 impl Component for Ship {

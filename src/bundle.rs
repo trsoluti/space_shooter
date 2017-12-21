@@ -6,9 +6,7 @@ use amethyst::ecs::{DispatcherBuilder, World};
 use components::Ship;
 use components::Asteroid;
 use components::Laser;
-use systems::ShipSystem;
-use systems::AsteroidSystem;
-use systems::CollisionSystem;
+use systems::*;
 use resources::{PlayState, PlayStateEnum};
 
 /// A bundle is a convenient way to initialise related resources, components and systems in a
@@ -27,6 +25,8 @@ impl<'a, 'b> ECSBundle<'a, 'b> for GameBundle {
                 .add(ShipSystem, "ship_system", &["input_system"])
                 .add(CollisionSystem, "collision_system", &["ship_system"])
                 .add(AsteroidSystem, "asteroid_system", &["collision_system"])
+                .add(LaserSystem, "laser_system", &["ship_system"])
+                .add(LaserCollisionSystem, "laser_collision_system", &["laser_system"])
         )
     }
 }

@@ -1,6 +1,7 @@
 use components::Ship;
 use resources::LaserResource;
 use entities::fire_laser;
+use config::GAME_CONFIGURATION;
 
 use amethyst::core::cgmath::Vector3;
 use amethyst::core::timing::Time;
@@ -27,28 +28,24 @@ impl<'s> System<'s> for ShipSystem {
 
     fn run(&mut self, (entities, mut ships, mut transforms, time, dimensions, input, laser_resource, lazy_update): Self::SystemData) {
         for (ship, transform) in (&mut ships, &mut transforms).join() {
+            // count down on the amount of time before we can fire again.
+            if ship.trigger_reset_timer > 0.0 {
+                ship.trigger_reset_timer -= time.delta_seconds();
+            }
             let optional_movement = input.axis_value("ship");
 
             let optional_action = input.action_is_down("fire");
             if let Some(action) = optional_action {
-                if action {
-                    println!("Fire pressed! {}", action);
+                if action && ship.trigger_reset_timer <= 0.0 {
                     // fire from the middle top of the ship.
-                    let mut fire_position = LocalTransform::default();
-                    fire_position.translation[0] = transform.translation[0] + ship.width / 2.0 - laser_resource.component.width / 2.0;
-                    fire_position.translation[1] = transform.translation[1] + ship.height;
-                    fire_position.scale = Vector3{x:0.1, y:0.1, z:1.0};
+                    let fire_position = Vector3{
+                        x: transform.translation[0] + ship.width / 2.0,
+                        y: transform.translation[1] + ship.height,
+                        z: 0.0,
+                    };
                     fire_laser(&entities, &laser_resource, fire_position, &lazy_update);
-                    /*
-                    let laser_entity:Entity = entities.create();
-                    lazy_update.insert(laser_entity, laser_resource.material.clone());
-                    lazy_update.insert(laser_entity, laser_resource.mesh.clone());
-                    lazy_update.insert(laser_entity, laser_resource.component.clone());
-                    lazy_update.insert(laser_entity, fire_position.clone());
-                    lazy_update.insert(laser_entity, Transform::default());
-                    */
 
-                    // TODO: have some sort of countdown timer so can't fire too often.
+                    ship.trigger_reset_timer = GAME_CONFIGURATION.trigger_reset_timeout;
                 }
             }
 
