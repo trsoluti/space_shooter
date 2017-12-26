@@ -50,12 +50,14 @@ impl<'s> System<'s> for ShipSystem {
             }
 
             if let Some(movement) = optional_movement {
-                let arena_width = dimensions.width();
+                let arena_width = dimensions.width()/5.; // TODO: figure out why dimensions in systems are 5 times as big
                 transform.translation[0] -= ship.velocity * time.delta_seconds() * movement as f32;
+
+                // TODO: dimensions.width() currently doesn't return a correct value for width. Make a bug report.
 
                 transform.translation[0] = transform.translation[0]
                     .max(0.0)
-                    .min(arena_width - ship.width)
+                    .min(arena_width - ship.width);
             }
         }
     }

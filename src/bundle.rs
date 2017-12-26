@@ -3,11 +3,9 @@
 use amethyst::core::bundle::{ECSBundle, Result};
 use amethyst::ecs::{DispatcherBuilder, World};
 
-use components::Ship;
-use components::Asteroid;
-use components::Laser;
+use components::*;
 use systems::*;
-use resources::{PlayState, PlayStateEnum};
+use resources::{PlayState};
 
 /// A bundle is a convenient way to initialise related resources, components and systems in a
 /// world. This bundle prepares the world for a game of pong.
@@ -18,7 +16,8 @@ impl<'a, 'b> ECSBundle<'a, 'b> for GameBundle {
         world.register::<Ship>();
         world.register::<Asteroid>();
         world.register::<Laser>();
-        world.add_resource(PlayState{ current_state: PlayStateEnum::PlayOngoing});
+        world.register::<Life>();
+        world.add_resource(PlayState{ lives:3});
 
         Ok(
             builder
@@ -27,6 +26,7 @@ impl<'a, 'b> ECSBundle<'a, 'b> for GameBundle {
                 .add(AsteroidSystem, "asteroid_system", &["collision_system"])
                 .add(LaserSystem, "laser_system", &["ship_system"])
                 .add(LaserCollisionSystem, "laser_collision_system", &["laser_system"])
+                .add(LivesSystem, "lives_system", &["collision_system"])
         )
     }
 }

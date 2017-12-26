@@ -24,7 +24,7 @@ impl<'s> System<'s> for LaserSystem {
             laser_transform.translation[1] += GAME_CONFIGURATION.laser_velocity * time.delta_seconds();
 
             // Delete the laser if it has gone off the screen
-            if laser_transform.translation[1] > screen_dimensions.height() {
+            if laser_transform.translation[1] > screen_dimensions.height()/5. { // TODO: figure out why dimensions in systems are 5 times as big
                 let _result = entities.delete(laser_entity);
             }
         }

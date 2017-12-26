@@ -29,7 +29,8 @@ impl<'s> System<'s> for AsteroidSystem {
             // destroy and re-create them.
             if asteroid.is_destroyed || transform.translation[1] < (-asteroid.height) {
                 let mut rng = thread_rng();
-                let local_transform: LocalTransform = asteroid.locate(screen_dimensions.width(), screen_dimensions.height(), &mut rng);
+                // TODO: figure out why dimensions in systems are 5 times as big
+                let local_transform: LocalTransform = asteroid.locate(screen_dimensions.width()/5., screen_dimensions.height()/5., &mut rng);
                 transform.translation[0] = local_transform.translation[0];
                 transform.translation[1] = local_transform.translation[1];
                 asteroid.is_destroyed = false;

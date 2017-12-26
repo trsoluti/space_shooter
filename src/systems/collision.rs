@@ -4,7 +4,7 @@ use amethyst::ecs::{Join, System, ReadStorage, WriteStorage, FetchMut};
 
 use components::Ship;
 use components::Asteroid;
-use resources::{PlayState, PlayStateEnum};
+use resources::PlayState;
 
 pub struct CollisionSystem;
 
@@ -31,14 +31,11 @@ impl<'s> System<'s> for CollisionSystem {
                 if ((ship_left <= asteroid_right && ship_left >= asteroid_left)
                     || (ship_right <= asteroid_left && ship_right >= asteroid_right))
                     && (ship_top >= asteroid_bottom) {
-                    // we have a collision. Decrement the number of lives of the ship
-                    ship_component.lives -= 1;
+                    // we have a collision. Decrement the number of lives of the game
+                    play_state.lives -= 1;
                     // let the respawn system know the asteroid is destroyed and ready for respawn
                     asteroid_component.is_destroyed = true;
                 }
-            }
-            if ship_component.lives <= 0 {
-                play_state.current_state = PlayStateEnum::PlayComplete;
             }
         }
     }

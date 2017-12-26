@@ -1,9 +1,4 @@
 
-pub enum PlayStateEnum {
-    PlayOngoing,
-    PlayComplete,
-}
-
 pub struct PlayState {
-    pub current_state: PlayStateEnum,
+    pub lives: u8,
 }

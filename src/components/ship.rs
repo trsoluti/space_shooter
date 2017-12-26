@@ -5,7 +5,6 @@ pub struct Ship {
     pub velocity: f32,
     pub width: f32,
     pub height: f32,
-    pub lives: i32,
     pub trigger_reset_timer: f32,
 }
 

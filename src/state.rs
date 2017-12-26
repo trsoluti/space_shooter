@@ -4,7 +4,7 @@ use amethyst::ecs::{World};
 use amethyst::winit::{Event, KeyboardInput, VirtualKeyCode, WindowEvent};
 
 use entities::initialise_entities;
-use resources::{PlayState, PlayStateEnum};
+use resources::{PlayState};
 
 pub struct SpriteState;
 
@@ -33,9 +33,6 @@ impl State for SpriteState {
     // Stop the game if the ship runs out of lives
     fn fixed_update(&mut self, world: &mut World) -> Trans {
         let play_state = world.read_resource::<PlayState>();
-        match play_state.current_state {
-            PlayStateEnum::PlayComplete => Trans::Quit,
-            _ => Trans::None,
-        }
+        if play_state.lives == 0 { Trans::Quit} else { Trans::None }
     }
 }
