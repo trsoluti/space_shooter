@@ -1,4 +1,5 @@
-// Resources module
+//! Resources module
+
 mod play_state;
 mod laser;
 

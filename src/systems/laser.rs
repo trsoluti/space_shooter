@@ -1,26 +1,58 @@
 
 use amethyst::core::transform::LocalTransform;
-use amethyst::ecs::{Entities, Join, System, WriteStorage, Fetch};
+use amethyst::ecs::{Entities, Join, System, ReadStorage, WriteStorage, Fetch};
 use amethyst::renderer::ScreenDimensions;
 use amethyst::core::timing::Time;
 
 use components::Laser;
 use config::GAME_CONFIGURATION;
 
+/// Moves the laser and deletes it if it goes off the screen
+///
+/// This is a good pattern of one of the simplest systems:
+/// one that handles movement and destruction on out-of-bounds.
 pub struct LaserSystem;
 
 impl<'s> System<'s> for LaserSystem {
+    /// The data for each pass of the laser system
+    /// We need:
+    ///
+    /// * **Entities**:          the list of entities so we can delete the laser
+    ///                            when it goes out of bounds
+    /// * **Lasers**:            read access to the list of laser components
+    ///                            so we select only the laser entities and transforms
+    /// * **Transforms**:        write access to the list of transforms
+    ///                            so we can update the laser positions
+    /// * **Screen Dimensions**: read access to the size of our screen
+    /// * **Time**:              read access to the time resource so we can know how much time
+    ///                            has elapsed since we last ran this system
     type SystemData = (
         Entities<'s>,
-        WriteStorage<'s, Laser>,
+        ReadStorage<'s, Laser>,
         WriteStorage<'s, LocalTransform>,
         Fetch<'s, ScreenDimensions>,
         Fetch<'s, Time>,
     );
 
-    fn run(&mut self, (entities, mut lasers, mut transforms, screen_dimensions, time): Self::SystemData) {
+    /// Runs a pass of the system on our selected components
+    ///
+    /// This function is given a list of the components described under [SystemData](#associatedtype.SystemData).
+    ///
+    /// This is a good example of how entity pattern matching works.
+    /// We don't use anything in the laser component (which is why it is named `_laser_component`).
+    /// It is only in our list so that, when we do the join,
+    /// we pick out only the transforms and entities that have a laser component.
+    ///
+    /// This function scans the list of entities, lasers and transforms for laser entities and transforms.
+    ///
+    /// For each laser transform, it updates the position based on the laser velocity in our game configuration.
+    ///
+    /// The function then checks the laser's position against the screen top. If the laser has gone off the screen,
+    /// it asks the entity list to queue a request to delete the selected laser entity.
+    /// (The deletion will happen after all the systems have run and the Amethyst engine does a `world.maintain()`.)
+    fn run(&mut self, (entities, lasers, mut transforms, screen_dimensions, time): Self::SystemData) {
         // Scan through the list of lasers and move them forward.
-        for (laser_entity, _laser_component, laser_transform) in (&*entities, &mut lasers, &mut transforms).join() {
+        for (laser_entity, _laser_component, laser_transform) in (&*entities, &lasers, &mut transforms).join() {
             laser_transform.translation[1] += GAME_CONFIGURATION.laser_velocity * time.delta_seconds();
 
             // Delete the laser if it has gone off the screen

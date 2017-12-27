@@ -1,0 +1,8 @@
+(
+  ship_thrust: 20.0,
+  asteroid_velocity: 5.0,
+  wait_for_first_asteroid: 2.0,
+  asteroid_density: 0.3,
+  laser_velocity: 60.0,
+  trigger_reset_timeout: 0.5,
+)

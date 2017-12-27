@@ -1,34 +1,26 @@
 
 use amethyst::ecs::{Component, DenseVecStorage};
-use amethyst::core::cgmath::Vector3;
-use amethyst::core::transform::{LocalTransform};
-use rand::Rng;
-use rand::ThreadRng;
-use config::GAME_CONFIGURATION;
 
+/// A component for our asteroid
+///
+/// We store the velocity, width and height with the asteroid
+/// even though they are constants, to make them readily
+/// available.
+///
+/// In a proper COP design, you only store what will be
+/// modified by a system.
 #[derive(Clone)]
 pub struct Asteroid {
+    /// How fast the asteroid is falling
     pub velocity: f32,
+    /// The width of the asteroid in pixels
     pub width: f32,
+    /// The height of the asteroid in pixels
     pub height: f32,
+    /// Whether or not the asteroid has been destroyed and is ready for relocation
     pub is_destroyed: bool,
 }
 
 impl Component for Asteroid {
     type Storage = DenseVecStorage<Self>;
-}
-
-impl Asteroid {
-    pub fn locate(&self, screen_width: f32, screen_height: f32, rng: &mut ThreadRng)->LocalTransform {
-        let max_width = screen_width - self.width;
-        let min_height = screen_height + GAME_CONFIGURATION.wait_for_first_asteroid * GAME_CONFIGURATION.asteroid_velocity;
-        let max_height = min_height +  (screen_height * GAME_CONFIGURATION.asteroid_velocity) / GAME_CONFIGURATION.asteroid_density;
-        let pos_x = rng.next_f32()*max_width;
-        let pos_y = min_height + rng.next_f32()*(max_height-min_height);
-
-        let mut local_transform = LocalTransform::default();
-        local_transform.translation = Vector3::new(pos_x, pos_y, 0.0);
-        local_transform.scale = Vector3::new(0.1, 0.1, 1.0);
-        local_transform
-    }
 }

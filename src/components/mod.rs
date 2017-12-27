@@ -1,3 +1,10 @@
+//! Components for the game
+//!
+//! Each struct in this module represents a component of our space_shooter game.
+//!
+//! Note all components should be cloneable, so you can have more copies of
+//! a component when you need them. That's just good practice.
+
 mod ship;
 mod asteroid;
 mod laser;

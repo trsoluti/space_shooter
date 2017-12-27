@@ -6,10 +6,18 @@ use amethyst::winit::{Event, KeyboardInput, VirtualKeyCode, WindowEvent};
 use entities::initialise_entities;
 use resources::{PlayState};
 
-pub struct SpriteState;
+/// The rules on what to do at each point of the game
+///
+/// This game state demonstrates several standard patterns:
+///
+/// 1. Initialising all the entities on start
+/// 2. Handling the Escape key to stop the game
+/// 3. Monitoring a resource to determine the end of a game
+/// (and passing information from the system to the game state through a resource).
+pub struct GameState;
 
 
-impl State for SpriteState {
+impl State for GameState {
     fn on_start(&mut self, world: &mut World) {
         initialise_entities(world);
     }

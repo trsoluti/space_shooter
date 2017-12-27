@@ -1,3 +1,5 @@
+//! Manage the life entities
+
 use amethyst::ecs::{Entity, World};
 use amethyst::renderer::{PngFormat, Texture};
 use amethyst::ui::{UiImage, UiTransform};
@@ -8,7 +10,18 @@ use components::Life;
 const LIFE_WIDTH:f32 = 32.;
 const LIFE_HEIGHT:f32 = 26.;
 
-pub fn initialise_lives(world: &mut World) -> [Entity; 3] {
+/// Initialises the three life entities
+///
+/// Like [initialise_asteroids](../asteroid/fn.initialise_asteroids.html),
+/// this function creates a list of life entities representing the player's lives.
+///
+/// Note that the number of lives is hard-coded to three. To make it a designer-controlled
+/// variable, you can add the item to [game configuration](../../struct.GameConfiguration.html),
+/// then modify the code below.
+///
+/// Note as well that the co-ordination system for the UI layer is different. (0,0) is top-left instead of bottom-left,
+/// and the png sprites don't need to be scaled.
+pub fn initialise_lives(world: &mut World) -> Vec<Entity> {
     let logo = {
         let loader = world.read_resource::<Loader>();
         let life_texture = loader.load(
@@ -42,5 +55,5 @@ pub fn initialise_lives(world: &mut World) -> [Entity; 3] {
                 .build()
         );
     }
-    [ entity_list[0], entity_list[1], entity_list[2] ]
+    entity_list
 }

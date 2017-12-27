@@ -1,9 +1,11 @@
 [package]
-name = "sprite"
+name = "space_shooter"
 version = "0.1.0"
 authors = ["trsoluti <thomas_odell@trsolutions.biz>"]
 
 [dependencies]
 amethyst = { path = "../../../Rust/amethyst" }
-lazy_static = "*"
+lazy_static = "1.0"
 rand = "0.3"
+serde = "1.0.24"
+serde_derive = "1.0"
