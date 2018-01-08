@@ -10,4 +10,6 @@ It is fully documented, so you can use it as a learning resource.
 
 The assets are supplied from by Kenney Vleugels (www.kenney.nl) under [Creative Commons Licence CC0](http://creativecommons.org/publicdomain/zero/1.0/).
 
+Code is supplied under Apache License 2.0 and the MIT License. See the appropriate license files for more information.
+
 All other text and documentation is supplied under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
