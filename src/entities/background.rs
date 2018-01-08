@@ -13,7 +13,6 @@ pub fn initialise_background(world: &mut World) -> Entity {
 
     let mut local_transform = LocalTransform::default();
     local_transform.translation = Vector3::new(0.0, 0.0, 0.0);
-    local_transform.scale = Vector3::new(0.1, 0.1, 1.0);
 
     world
         .create_entity()

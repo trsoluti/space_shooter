@@ -1,7 +1,6 @@
 
 use amethyst::core::transform::LocalTransform;
 use amethyst::ecs::{Entities, Join, System, ReadStorage, WriteStorage, Fetch};
-use amethyst::renderer::ScreenDimensions;
 use amethyst::core::timing::Time;
 
 use components::Laser;
@@ -23,14 +22,12 @@ impl<'s> System<'s> for LaserSystem {
     ///                            so we select only the laser entities and transforms
     /// * **Transforms**:        write access to the list of transforms
     ///                            so we can update the laser positions
-    /// * **Screen Dimensions**: read access to the size of our screen
     /// * **Time**:              read access to the time resource so we can know how much time
     ///                            has elapsed since we last ran this system
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Laser>,
         WriteStorage<'s, LocalTransform>,
-        Fetch<'s, ScreenDimensions>,
         Fetch<'s, Time>,
     );
 
@@ -50,13 +47,13 @@ impl<'s> System<'s> for LaserSystem {
     /// The function then checks the laser's position against the screen top. If the laser has gone off the screen,
     /// it asks the entity list to queue a request to delete the selected laser entity.
     /// (The deletion will happen after all the systems have run and the Amethyst engine does a `world.maintain()`.)
-    fn run(&mut self, (entities, lasers, mut transforms, screen_dimensions, time): Self::SystemData) {
+    fn run(&mut self, (entities, lasers, mut transforms, time): Self::SystemData) {
         // Scan through the list of lasers and move them forward.
         for (laser_entity, _laser_component, laser_transform) in (&*entities, &lasers, &mut transforms).join() {
             laser_transform.translation[1] += GAME_CONFIGURATION.laser_velocity * time.delta_seconds();
 
             // Delete the laser if it has gone off the screen
-            if laser_transform.translation[1] > screen_dimensions.height()/5. { // TODO: figure out why dimensions in systems are 5 times as big
+            if laser_transform.translation[1] > 1024. {
                 let _result = entities.delete(laser_entity);
             }
         }

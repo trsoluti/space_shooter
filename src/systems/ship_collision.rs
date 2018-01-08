@@ -66,7 +66,9 @@ impl<'s> System<'s> for ShipCollisionSystem {
                     || (ship_right <= asteroid_left && ship_right >= asteroid_right))
                     && (ship_top >= asteroid_bottom) {
                     // we have a collision. Decrement the number of lives of the game
-                    play_state.lives -= 1;
+                    if play_state.lives > 0 {
+                        play_state.lives -= 1;
+                    }
                     // let the asteroid system know the asteroid is ready for respawn/relocation
                     asteroid_component.is_destroyed = true;
                 }

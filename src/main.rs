@@ -24,7 +24,7 @@
 //!     <td>the sets of rules that act on entities by changing their data.</td>
 //!   </tr>
 //!   <tr>
-//!     <td>resources</td>
+//!     <td><a href="resources/index.html">resources</a></td>
 //!     <td>data "global" to the game that the entity needs, e.g. the screen bounds.</td>
 //!   </tr>
 //! </table>
@@ -70,7 +70,7 @@ mod bundle;
 pub mod components;
 pub mod entities;
 pub mod systems;
-mod resources;
+pub mod resources;
 
 // public use so these things get documented
 pub use config::GameConfiguration;

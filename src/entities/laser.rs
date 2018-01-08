@@ -31,8 +31,8 @@ pub fn initialise_laser_resource(world: &mut World) -> LaserResource {
         material,
         component: LaserComponent {
             velocity: GAME_CONFIGURATION.laser_velocity,
-            width: 9.0 * 0.1,
-            height: 54.0 * 0.1,
+            width: 9.0,
+            height: 54.0,
         },
     };
     world.add_resource(laser_resource.clone());
@@ -54,8 +54,6 @@ pub fn fire_laser(entities: &Entities, laser_resource: &Fetch<LaserResource>, fi
         local_transform.translation = fire_position;
         // the fire position actually represents the middle of our laser. Adjust accordingly.
         local_transform.translation[0] -= laser_resource.component.width / 2.0;
-        // scale the item properly:
-        local_transform.scale = Vector3::new(0.1, 0.1, 1.0);
         local_transform
     };
     lazy_update.insert(laser_entity, laser_resource.material.clone());

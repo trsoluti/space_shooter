@@ -20,7 +20,6 @@
 
 use amethyst::ecs::{Entity, World};
 use amethyst::core::transform::{Transform, LocalTransform};
-use amethyst::renderer::ScreenDimensions;
 use amethyst::core::cgmath::Vector3;
 use rand::{Rng, ThreadRng, thread_rng};
 
@@ -44,13 +43,12 @@ pub fn initialise_asteroids(world: &mut World) -> Vec<Entity> {
     let (mesh, background) = png_mesh_and_material("PNG/Meteors/meteorBrown_med1.png", [43.0,43.0], world);
     let asteroid = Asteroid {
         velocity: GAME_CONFIGURATION.asteroid_velocity,
-        width: 43.0 * 0.1, // asteroids are scaled at 10% or they'll be too big.
-        height: 43.0 * 0.1,
+        width: 43.0,
+        height: 43.0,
         is_destroyed: false,
     };
     let (screen_width, screen_height) = {
-        let dim = world.read_resource::<ScreenDimensions>();
-        (dim.width(), dim.height())
+        (1024.,1024.)
     };
 
     let mut rng = thread_rng();
@@ -88,6 +86,5 @@ pub fn locate_asteroid(asteroid: &Asteroid, screen_width: f32, screen_height: f3
 
     let mut local_transform = LocalTransform::default();
     local_transform.translation = Vector3::new(pos_x, pos_y, 0.0);
-    local_transform.scale = Vector3::new(0.1, 0.1, 1.0);
     local_transform
 }

@@ -7,7 +7,6 @@ use amethyst::core::cgmath::Vector3;
 use amethyst::core::timing::Time;
 use amethyst::core::transform::LocalTransform;
 use amethyst::ecs::{Fetch, Join, System, WriteStorage, Entities, LazyUpdate};
-use amethyst::renderer::ScreenDimensions;
 use amethyst::input::InputHandler;
 
 /// Moves the ship and fires lasers based on user-provided input.
@@ -35,8 +34,6 @@ impl<'s> System<'s> for ShipSystem {
     ///                            so we can update the ship's location
     /// * **Time**:              read access to the time resource so we can know how much time
     ///                            has elapsed since we last ran this system
-    /// * **Screen Dimensions**: read access to the screen dimensions so we can
-    ///                            put bounds on the ship's movement
     /// * **Input Handler**:     read access to the input handler so we can
     ///                            sample the position of the "joystick" and the fire "button"
     /// * **LaserResource**:     read access to the laser creation resources we set up in
@@ -49,7 +46,6 @@ impl<'s> System<'s> for ShipSystem {
         WriteStorage<'s, Ship>,
         WriteStorage<'s, LocalTransform>,
         Fetch<'s, Time>,
-        Fetch<'s, ScreenDimensions>,
         Fetch<'s, InputHandler<String, String>>,
         Fetch<'s, LaserResource>,
         Fetch<'s, LazyUpdate>,
@@ -74,7 +70,7 @@ impl<'s> System<'s> for ShipSystem {
     /// apply the appropriate thrust to the ship's velocity.
     ///
     /// Finally, we move the ship and bounce it off the bounds if we have hit them.
-    fn run(&mut self, (entities, mut ships, mut transforms, time, dimensions, input, laser_resource, lazy_update): Self::SystemData) {
+    fn run(&mut self, (entities, mut ships, mut transforms, time, input, laser_resource, lazy_update): Self::SystemData) {
         for (ship, transform) in (&mut ships, &mut transforms).join() {
             // count down on the amount of time before we can fire again.
             if ship.trigger_reset_timer > 0.0 {
@@ -110,10 +106,10 @@ impl<'s> System<'s> for ShipSystem {
             transform.translation[0] -= ship.velocity * time.delta_seconds();
 
             // make sure the ship stays on the screen
-            let arena_width = dimensions.width()/5.; // TODO: figure out why dimensions in systems are 5 times as big
-            let max_position = arena_width - ship.width;
-            if transform.translation[0] <= 0. {
-                transform.translation[0] = 0.;
+            let arena_width = 1024.;
+            let max_position = arena_width - (ship.width/2.0);
+            if transform.translation[0] <= (-ship.width/2.0) {
+                transform.translation[0] = -ship.width/2.0;
                 ship.velocity = -ship.velocity; // bounce off the left wall
             } else if transform.translation[0] >= max_position {
                 transform.translation[0] = max_position;
