@@ -1,6 +1,6 @@
 //! Manage the camera entity
 use amethyst::ecs::{Entity, World};
-use amethyst::core::transform::Transform;
+use amethyst::core::transform::GlobalTransform;
 use amethyst::renderer::{Camera, Projection};
 use amethyst::core::cgmath::{Matrix4, Vector3};
 
@@ -21,7 +21,7 @@ pub fn initialise_camera(world: &mut World) -> Entity {
             1024.,
             0.0
         )))
-        .with(Transform(
+        .with(GlobalTransform(
             Matrix4::from_translation(
                 Vector3::new(0.0, 0.0, 1.0).into(),
             )

@@ -19,7 +19,7 @@
 //! so both methods have the same underlying implementation.)
 
 use amethyst::ecs::{Entity, World};
-use amethyst::core::transform::{Transform, LocalTransform};
+use amethyst::core::transform::{GlobalTransform, Transform};
 use amethyst::core::cgmath::Vector3;
 use rand::{Rng, ThreadRng, thread_rng};
 
@@ -64,7 +64,7 @@ pub fn initialise_asteroids(world: &mut World) -> Vec<Entity> {
         .with(background.clone())
         .with(asteroid.clone())
         .with(local_transform)
-        .with(Transform::default())
+        .with(GlobalTransform::default())
         .build()
     }).collect()
 }
@@ -77,14 +77,14 @@ pub fn initialise_asteroids(world: &mut World) -> Vec<Entity> {
 ///
 /// As well, the height of the field is the same as the screen size,
 /// so the asteroids will fall at continuously regular intervals.
-pub fn locate_asteroid(asteroid: &Asteroid, screen_width: f32, screen_height: f32, random_number_generator: &mut ThreadRng)->LocalTransform {
+pub fn locate_asteroid(asteroid: &Asteroid, screen_width: f32, screen_height: f32, random_number_generator: &mut ThreadRng)->Transform {
     let max_width = screen_width - asteroid.width;
     let min_height = screen_height + GAME_CONFIGURATION.wait_for_first_asteroid * GAME_CONFIGURATION.asteroid_velocity;
     let max_height = min_height +  (screen_height * GAME_CONFIGURATION.asteroid_velocity) / GAME_CONFIGURATION.asteroid_density;
     let pos_x = random_number_generator.next_f32()*max_width;
     let pos_y = min_height + random_number_generator.next_f32()*(max_height-min_height);
 
-    let mut local_transform = LocalTransform::default();
+    let mut local_transform = Transform::default();
     local_transform.translation = Vector3::new(pos_x, pos_y, 0.0);
     local_transform
 }

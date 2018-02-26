@@ -9,7 +9,9 @@ lazy_static = "1.0"
 rand = "0.3"
 serde = "1.0.24"
 serde_derive = "1.0"
+gfx_core = "*"
+gfx = "*"
 
 [dependencies.amethyst]
 git = "https://github.com/amethyst/amethyst"
-rev = "e6e1d27640f46c5dabbbb22d77ff1bdd4f3fa106"
+rev = "ba233ed"

@@ -63,6 +63,10 @@ extern crate serde_derive;
 #[macro_use]
 extern crate lazy_static;
 extern crate rand;
+// These next two crates are needed only for the arguments to with_transparency()
+// eventually this will be blended into Amethyst somehow.
+extern crate gfx;
+extern crate gfx_core;
 
 mod config;
 mod state;
@@ -80,9 +84,13 @@ pub use bundle::GameBundle;
 
 use amethyst::prelude::*;
 use amethyst::core::transform::TransformBundle;
-use amethyst::renderer::{DisplayConfig, RenderBundle, RenderSystem, Pipeline, Stage, DrawFlat, PosTex};
+use amethyst::renderer::{DisplayConfig, RenderBundle, Pipeline, Stage, DrawFlat, PosTex};
 use amethyst::ui::{DrawUi, UiBundle};
 use amethyst::input::InputBundle;
+// These next two values are needed only for the arguments to with_transparency()
+// eventually this will be blended into Amethyst somehow.
+use gfx_core::state::{ColorMask};
+use gfx::preset::blend::ALPHA;
 
 
 
@@ -113,7 +121,18 @@ pub fn run() -> Result<(), amethyst::Error> {
 
     let resources_path = format!("{}/assets", env!("CARGO_MANIFEST_DIR"));
 
-    let game = Application::build(
+    let pipe = {
+        Pipeline::build()
+            .with_stage(
+                Stage::with_backbuffer()
+                    .clear_target(BACKGROUND_COLOUR, 1.0)
+                    .with_pass(DrawFlat::<PosTex>::new().with_transparency(ColorMask::all(), ALPHA, None))
+                    .with_pass(DrawUi::new())
+            )
+
+    };
+
+    let mut game = Application::build(
         resources_path,
         GameState)?
         .with_bundle(
@@ -121,27 +140,14 @@ pub fn run() -> Result<(), amethyst::Error> {
                 &key_bindings_path
             ),
         )?
-        .with_bundle(RenderBundle::new())?
+        .with_bundle(RenderBundle::new(pipe, Some(display_config)))?
         .with_bundle(UiBundle::new())?
         .with_bundle(TransformBundle::new())?
-        .with_bundle(GameBundle)?;
-
-    let pipe = {
-        let loader = game.world.read_resource();
-        let mesh_storage = game.world.read_resource();
-        Pipeline::build()
-            .with_stage(
-                Stage::with_backbuffer()
-                    .clear_target(BACKGROUND_COLOUR, 1.0)
-                    .with_pass(DrawFlat::<PosTex>::new())
-                    .with_pass(DrawUi::new(&loader, &mesh_storage))
-            )
-    };
+        .with_bundle(GameBundle)?
+        .build()?;
 
     Ok(
-        game.with_local(RenderSystem::build(pipe, Some(display_config))?)
-            .build()?
-            .run(),
+        game.run(),
     )
 }
 

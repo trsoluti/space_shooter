@@ -1,5 +1,5 @@
 
-use amethyst::core::transform::LocalTransform;
+use amethyst::core::transform::Transform;
 use amethyst::ecs::{Join, System, ReadStorage, WriteStorage, FetchMut};
 
 use components::Ship;
@@ -29,7 +29,7 @@ impl<'s> System<'s> for ShipCollisionSystem {
     type SystemData = (
         FetchMut<'s, PlayState>,
         ReadStorage<'s, Ship>,
-        ReadStorage<'s, LocalTransform>,
+        ReadStorage<'s, Transform>,
         WriteStorage<'s, Asteroid>,
     );
 

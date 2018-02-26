@@ -1,5 +1,5 @@
 
-use amethyst::core::transform::LocalTransform;
+use amethyst::core::transform::Transform;
 use amethyst::ecs::{Entities, Join, System, ReadStorage, WriteStorage, Fetch};
 use amethyst::core::timing::Time;
 
@@ -27,7 +27,7 @@ impl<'s> System<'s> for LaserSystem {
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Laser>,
-        WriteStorage<'s, LocalTransform>,
+        WriteStorage<'s, Transform>,
         Fetch<'s, Time>,
     );
 

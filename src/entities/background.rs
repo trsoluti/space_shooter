@@ -2,7 +2,7 @@
 
 use amethyst::ecs::{Entity, World};
 use amethyst::core::cgmath::Vector3;
-use amethyst::core::transform::{LocalTransform, Transform};
+use amethyst::core::transform::{Transform, GlobalTransform};
 
 use super::png_mesh_and_material;
 
@@ -11,7 +11,7 @@ pub fn initialise_background(world: &mut World) -> Entity {
 
     let (mesh, background) = png_mesh_and_material("Backgrounds/darkPurple.png", [1024.0, 1024.0], world);
 
-    let mut local_transform = LocalTransform::default();
+    let mut local_transform = Transform::default();
     local_transform.translation = Vector3::new(0.0, 0.0, 0.0);
 
     world
@@ -19,7 +19,7 @@ pub fn initialise_background(world: &mut World) -> Entity {
         .with(mesh)
         .with(background)
         .with(local_transform)
-        .with(Transform::default())
+        .with(GlobalTransform::default())
         .build()
 }
 

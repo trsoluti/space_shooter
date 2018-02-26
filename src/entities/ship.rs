@@ -2,7 +2,7 @@
 
 use amethyst::ecs::{Entity, World};
 use amethyst::core::cgmath::Vector3;
-use amethyst::core::transform::{LocalTransform, Transform};
+use amethyst::core::transform::{Transform, GlobalTransform};
 
 use super::png_mesh_and_material;
 
@@ -32,7 +32,7 @@ pub fn initialise_ship(world: &mut World) -> Entity {
     };
 
     // Set the scale and position of our ship sprite:
-    let mut local_transform = LocalTransform::default();
+    let mut local_transform = Transform::default();
     local_transform.translation = Vector3::new(width/2.0 - SHIP_WIDTH/2.0, 0.0, 0.0);
 
     // Create a new entity by bundling the mesh, material, component and transforms together
@@ -47,6 +47,6 @@ pub fn initialise_ship(world: &mut World) -> Entity {
             height: SHIP_HEIGHT,
             trigger_reset_timer: 0.0})
         .with(local_transform)
-        .with(Transform::default())
+        .with(GlobalTransform::default())
         .build()
 }

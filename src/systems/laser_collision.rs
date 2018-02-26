@@ -1,5 +1,5 @@
 
-use amethyst::core::transform::LocalTransform;
+use amethyst::core::transform::Transform;
 use amethyst::ecs::{Entities, Join, System, ReadStorage, WriteStorage};
 
 use components::Laser;
@@ -24,7 +24,7 @@ impl<'s> System<'s> for LaserCollisionSystem {
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Laser>,
-        ReadStorage<'s, LocalTransform>,
+        ReadStorage<'s, Transform>,
         WriteStorage<'s, Asteroid>,
     );
 

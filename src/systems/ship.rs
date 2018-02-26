@@ -5,7 +5,7 @@ use config::GAME_CONFIGURATION;
 
 use amethyst::core::cgmath::Vector3;
 use amethyst::core::timing::Time;
-use amethyst::core::transform::LocalTransform;
+use amethyst::core::transform::Transform;
 use amethyst::ecs::{Fetch, Join, System, WriteStorage, Entities, LazyUpdate};
 use amethyst::input::InputHandler;
 
@@ -44,7 +44,7 @@ impl<'s> System<'s> for ShipSystem {
     type SystemData = (
         Entities<'s>,
         WriteStorage<'s, Ship>,
-        WriteStorage<'s, LocalTransform>,
+        WriteStorage<'s, Transform>,
         Fetch<'s, Time>,
         Fetch<'s, InputHandler<String, String>>,
         Fetch<'s, LaserResource>,
