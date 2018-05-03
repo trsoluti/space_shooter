@@ -1,9 +1,11 @@
 
 use amethyst::prelude::*;
-use amethyst::ecs::{World};
+use amethyst::ecs::prelude::{World};
 use amethyst::winit::{Event, KeyboardInput, VirtualKeyCode, WindowEvent};
 
 use entities::initialise_entities;
+use resources::add_resources;
+use components::register_components;
 use resources::{PlayState};
 
 /// The rules on what to do at each point of the game
@@ -19,6 +21,8 @@ pub struct GameState;
 
 impl State for GameState {
     fn on_start(&mut self, world: &mut World) {
+        register_components(world);
+        add_resources(world);
         initialise_entities(world);
     }
 

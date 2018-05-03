@@ -1,6 +1,6 @@
 
 use amethyst::core::transform::Transform;
-use amethyst::ecs::{Entities, Join, System, ReadStorage, WriteStorage};
+use amethyst::ecs::prelude::{Entities, Join, System, ReadStorage, WriteStorage};
 
 use components::Laser;
 use components::Asteroid;

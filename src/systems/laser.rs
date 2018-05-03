@@ -1,6 +1,6 @@
 
 use amethyst::core::transform::Transform;
-use amethyst::ecs::{Entities, Join, System, ReadStorage, WriteStorage, Fetch};
+use amethyst::ecs::prelude::{Entities, Join, System, ReadStorage, WriteStorage, Read};
 use amethyst::core::timing::Time;
 
 use components::Laser;
@@ -28,7 +28,7 @@ impl<'s> System<'s> for LaserSystem {
         Entities<'s>,
         ReadStorage<'s, Laser>,
         WriteStorage<'s, Transform>,
-        Fetch<'s, Time>,
+        Read<'s, Time>,
     );
 
     /// Runs a pass of the system on our selected components

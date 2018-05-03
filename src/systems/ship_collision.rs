@@ -1,6 +1,6 @@
 
 use amethyst::core::transform::Transform;
-use amethyst::ecs::{Join, System, ReadStorage, WriteStorage, FetchMut};
+use amethyst::ecs::prelude::{Join, System, ReadStorage, WriteStorage, Write};
 
 use components::Ship;
 use components::Asteroid;
@@ -27,7 +27,7 @@ impl<'s> System<'s> for ShipCollisionSystem {
     /// Note that we have a list of ships even though the game has only one ship.
     /// This is the appropriate way to extract the ship and transport component from our storage.
     type SystemData = (
-        FetchMut<'s, PlayState>,
+        Write<'s, PlayState>,
         ReadStorage<'s, Ship>,
         ReadStorage<'s, Transform>,
         WriteStorage<'s, Asteroid>,

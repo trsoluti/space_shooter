@@ -6,7 +6,7 @@ use config::GAME_CONFIGURATION;
 use amethyst::core::cgmath::Vector3;
 use amethyst::core::timing::Time;
 use amethyst::core::transform::Transform;
-use amethyst::ecs::{Fetch, Join, System, WriteStorage, Entities, LazyUpdate};
+use amethyst::ecs::prelude::{ReadExpect, Join, System, WriteStorage, Entities, LazyUpdate};
 use amethyst::input::InputHandler;
 
 /// Moves the ship and fires lasers based on user-provided input.
@@ -45,10 +45,10 @@ impl<'s> System<'s> for ShipSystem {
         Entities<'s>,
         WriteStorage<'s, Ship>,
         WriteStorage<'s, Transform>,
-        Fetch<'s, Time>,
-        Fetch<'s, InputHandler<String, String>>,
-        Fetch<'s, LaserResource>,
-        Fetch<'s, LazyUpdate>,
+        ReadExpect<'s, Time>,
+        ReadExpect<'s, InputHandler<String, String>>,
+        ReadExpect<'s, LaserResource>,
+        ReadExpect<'s, LazyUpdate>,
     );
 
     /// Runs a pass of the system on our selected components

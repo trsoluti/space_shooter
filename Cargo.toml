@@ -1,17 +1,20 @@
 [package]
 name = "space_shooter"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["trsoluti <thomas_odell@trsolutions.biz>"]
 
 [dependencies]
 #amethyst = { path = "../../../Rust/amethyst" }
-lazy_static = "1.0"
-rand = "0.3"
-serde = "1.0.24"
-serde_derive = "1.0"
+lazy_static = "*"
+rand = "*"
+serde = "*"
+serde_derive = "*"
 gfx_core = "*"
 gfx = "*"
 
 [dependencies.amethyst]
 git = "https://github.com/amethyst/amethyst"
-rev = "ba233ed"
+rev = "04ccfd8"
+
+[patch.crates-io]
+coreaudio-sys = { git = "https://github.com/regexident/coreaudio-sys.git", rev = "0950296041eb15a3e2a6e9faaf95242cdf83cef1" }

@@ -1,6 +1,6 @@
 use amethyst::core::timing::Time;
 use amethyst::core::transform::Transform;
-use amethyst::ecs::{Fetch, Join, System, WriteStorage};
+use amethyst::ecs::prelude::{Read, Join, System, WriteStorage};
 use rand::thread_rng;
 
 use components::Asteroid;
@@ -23,7 +23,7 @@ impl<'s> System<'s> for AsteroidSystem {
     type SystemData = (
         WriteStorage<'s, Asteroid>,
         WriteStorage<'s, Transform>,
-        Fetch<'s, Time>,
+        Read<'s, Time>,
     );
 
     /// Runs a pass of the system on our selected components

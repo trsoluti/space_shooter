@@ -10,6 +10,7 @@
 /// life icons to display on the UI level.
 ///
 /// The game state uses this resource to determine when to end the game.
+#[derive(Clone, Default)]
 pub struct PlayState {
     /// Number of lives the player has currently
     pub lives: u8,

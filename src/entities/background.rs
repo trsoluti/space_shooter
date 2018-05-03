@@ -1,6 +1,6 @@
 //! Manage the background entity
 
-use amethyst::ecs::{Entity, World};
+use amethyst::ecs::prelude::{Entity, World};
 use amethyst::core::cgmath::Vector3;
 use amethyst::core::transform::{Transform, GlobalTransform};
 

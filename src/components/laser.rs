@@ -1,5 +1,5 @@
 
-use amethyst::ecs::{Component, DenseVecStorage};
+use amethyst::ecs::prelude::{Component, DenseVecStorage};
 
 /// Component for our asteroid-destroying laser beam.
 #[derive(Clone)]

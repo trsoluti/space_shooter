@@ -1,5 +1,5 @@
 //! Manage the camera entity
-use amethyst::ecs::{Entity, World};
+use amethyst::ecs::prelude::{Entity, World};
 use amethyst::core::transform::GlobalTransform;
 use amethyst::renderer::{Camera, Projection};
 use amethyst::core::cgmath::{Matrix4, Vector3};

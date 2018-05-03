@@ -1,6 +1,6 @@
 //! Manage the life entities
 
-use amethyst::ecs::{Entity, World};
+use amethyst::ecs::prelude::{Entity, World};
 use amethyst::renderer::{PngFormat, Texture};
 use amethyst::ui::{UiImage, UiTransform};
 use amethyst::assets::{AssetStorage, Loader};

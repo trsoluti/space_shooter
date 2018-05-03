@@ -21,7 +21,7 @@ pub mod asteroid;
 pub mod laser;
 pub mod lives;
 
-use amethyst::ecs::World;
+use amethyst::ecs::prelude::World;
 use amethyst::renderer::{PngFormat, Texture, PosTex, Mesh, Material, MaterialDefaults};
 use amethyst::assets::{AssetStorage, Loader, Handle};
 

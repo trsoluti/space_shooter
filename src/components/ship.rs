@@ -1,5 +1,5 @@
 
-use amethyst::ecs::{Component, DenseVecStorage};
+use amethyst::ecs::prelude::{Component, DenseVecStorage};
 
 /// The component for the player's space ship
 ///

@@ -10,7 +10,7 @@
 //!
 //! The laser movement system will destroy the laser when it runs out of
 //! camera range or hits an asteroid.
-use amethyst::ecs::{World, Entities, Entity, LazyUpdate, Fetch};
+use amethyst::ecs::prelude::{World, Entities, Entity, LazyUpdate, ReadExpect};
 use amethyst::core::transform::{GlobalTransform, Transform};
 use amethyst::core::cgmath::Vector3;
 
@@ -47,7 +47,12 @@ pub fn initialise_laser_resource(world: &mut World) -> LaserResource {
 ///
 /// When the Amethyst engine calls world.maintain(),
 /// it will create the laser entity.
-pub fn fire_laser(entities: &Entities, laser_resource: &Fetch<LaserResource>, fire_position: Vector3<f32>, lazy_update: &Fetch<LazyUpdate>) {
+pub fn fire_laser(
+    entities: &Entities,
+    laser_resource: &ReadExpect<LaserResource>,
+    fire_position: Vector3<f32>,
+    lazy_update: &ReadExpect<LazyUpdate>)
+{
     let laser_entity:Entity = entities.create();
     let local_transform = {
         let mut local_transform = Transform::default();

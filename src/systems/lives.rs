@@ -1,5 +1,5 @@
 
-use amethyst::ecs::{Fetch, Join, System, ReadStorage, Entities};
+use amethyst::ecs::prelude::{Read, Join, System, ReadStorage, Entities};
 
 use components::Life;
 use resources::PlayState;
@@ -24,7 +24,7 @@ impl<'s> System<'s> for LivesSystem {
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Life>,
-        Fetch<'s, PlayState>,
+        Read<'s, PlayState>,
     );
 
     /// Runs a pass of the system on our selected components

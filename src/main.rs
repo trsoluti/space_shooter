@@ -140,10 +140,10 @@ pub fn run() -> Result<(), amethyst::Error> {
                 &key_bindings_path
             ),
         )?
-        .with_bundle(RenderBundle::new(pipe, Some(display_config)))?
-        .with_bundle(UiBundle::new())?
-        .with_bundle(TransformBundle::new())?
         .with_bundle(GameBundle)?
+        .with_bundle(TransformBundle::new())?
+        .with_bundle(UiBundle::<String, String>::new())?
+        .with_bundle(RenderBundle::new(pipe, Some(display_config)))?
         .build()?;
 
     Ok(
