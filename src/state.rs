@@ -1,6 +1,5 @@
 
 use amethyst::prelude::*;
-use amethyst::ecs::prelude::{World};
 use amethyst::winit::{Event, KeyboardInput, VirtualKeyCode, WindowEvent};
 
 use entities::initialise_entities;
@@ -19,14 +18,15 @@ use resources::{PlayState};
 pub struct GameState;
 
 
-impl State for GameState {
-    fn on_start(&mut self, world: &mut World) {
+impl<'a, 'b> State<GameData<'a, 'b>> for GameState {
+    fn on_start(&mut self, state_data: StateData<GameData>) {
+        let world = state_data.world;
         register_components(world);
         add_resources(world);
         initialise_entities(world);
     }
 
-    fn handle_event(&mut self, _: &mut World, event: Event) -> Trans {
+    fn handle_event(&mut self, _: StateData<GameData>, event: Event) -> Trans<GameData<'a, 'b>> {
         match event {
             Event::WindowEvent { event, .. } => match event {
                 WindowEvent::KeyboardInput {
@@ -42,9 +42,17 @@ impl State for GameState {
             _ => Trans::None,
         }
     }
+
     // Stop the game if the ship runs out of lives
-    fn fixed_update(&mut self, world: &mut World) -> Trans {
+    fn fixed_update(&mut self, state_data: StateData<GameData>) -> Trans<GameData<'a, 'b>> {
+        let world = state_data.world;
         let play_state = world.read_resource::<PlayState>();
         if play_state.lives == 0 { Trans::Quit} else { Trans::None }
+    }
+
+    // This code tells Amethyst to run all the systems in your game data.
+    fn update (&mut self, state_data: StateData<GameData>) -> Trans<GameData<'a, 'b>> {
+        state_data.data.update(&state_data.world);
+        Trans::None
     }
 }

@@ -1,6 +1,6 @@
 [package]
 name = "space_shooter"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["trsoluti <thomas_odell@trsolutions.biz>"]
 
 [dependencies]
@@ -14,7 +14,7 @@ gfx = "*"
 
 [dependencies.amethyst]
 git = "https://github.com/amethyst/amethyst"
-rev = "04ccfd8"
+rev = "78b83a860505349402a2c9dc4f4c5b6896a11cf7"
 
 [patch.crates-io]
-coreaudio-sys = { git = "https://github.com/regexident/coreaudio-sys.git", rev = "0950296041eb15a3e2a6e9faaf95242cdf83cef1" }
+coreaudio-sys = { git = "https://github.com/RustAudio/coreaudio-sys.git", rev = "cf3a8321f461655a304ee8aa3139d5c5c88fd379" }

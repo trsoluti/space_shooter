@@ -44,7 +44,7 @@
 //!   </tr>
 //!   <tr>
 //!     <td><a href="struct.GameBundle.html">game bundle</a></td>
-//!     <td>The collection of components, resources and systems that make up the game.</td>
+//!     <td>The collection of systems that make up the game.</td>
 //!   </tr>
 //!   <tr>
 //!     <td><a href="struct.GameConfiguration.html">game configuration</td>
@@ -102,18 +102,21 @@ const BACKGROUND_COLOUR: [f32; 4] = [0.25, 0.25, 0.25, 0.0]; // dark grey
 ///
 /// 1. Loads up the display configuration and input bindings from RON files
 ///    in the resources folder;
-/// 2. Creates a new Amethyst game with all the appropriate bundles;
-/// 3. Sets out the rendering passes: background, sprite drawing and UI;
-/// 4. Sets the game running. Control is now passed to the game state.
+/// 2. Sets out the rendering pipeline: background rendering pass, sprite rendering pass and UI rendering pass;
+/// 3. Creates a new Amethyst game data object with all the appropriate bundles;
+/// 4. Creates a new Amethyst game with the game data and our [GameState].
+/// 5. Sets the game running. Control is now passed to the game state.
 pub fn run() -> Result<(), amethyst::Error> {
     let _ = &config::GAME_CONFIGURATION; // initialises game constants
 
+    // Set the display configuration path to <package root>/resources/display_config.ron.
     let display_config_path = format!(
         "{}/resources/display_config.ron",
         env!("CARGO_MANIFEST_DIR")
     );
     let display_config = DisplayConfig::load(&display_config_path);
 
+    // Load up the key bindings path and the resources path
     let key_bindings_path = format!(
         "{}/resources/input.ron",
         env!("CARGO_MANIFEST_DIR")
@@ -121,6 +124,10 @@ pub fn run() -> Result<(), amethyst::Error> {
 
     let resources_path = format!("{}/assets", env!("CARGO_MANIFEST_DIR"));
 
+    // Create a pipeline that has three passes:
+    // 1. setting the background to the background colour constant
+    // 2. drawing the background image and the sprites
+    // 3. drawing the UI components (lives)
     let pipe = {
         Pipeline::build()
             .with_stage(
@@ -132,9 +139,8 @@ pub fn run() -> Result<(), amethyst::Error> {
 
     };
 
-    let mut game = Application::build(
-        resources_path,
-        GameState)?
+    // Create a game data with all our systems bundled into it
+    let game_data = GameDataBuilder::default()
         .with_bundle(
             InputBundle::<String, String>::new().with_bindings_from_file(
                 &key_bindings_path
@@ -143,8 +149,13 @@ pub fn run() -> Result<(), amethyst::Error> {
         .with_bundle(GameBundle)?
         .with_bundle(TransformBundle::new())?
         .with_bundle(UiBundle::<String, String>::new())?
-        .with_bundle(RenderBundle::new(pipe, Some(display_config)))?
-        .build()?;
+        .with_bundle(RenderBundle::new(pipe, Some(display_config)))?;
+
+    // Create a game with out game data and our GameState.
+    let mut game = Application::new(
+        resources_path,
+        GameState,
+        game_data)?;
 
     Ok(
         game.run(),
