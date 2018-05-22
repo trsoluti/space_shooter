@@ -1,4 +1,7 @@
 # Space Shooter
+
+![window example result](screenshot.png)
+
 A simple 2D space-shooter game that demonstrates how to make a game using the [Amethyst](https://github.com/amethyst/amethyst) game engine.
 
 This is a simple space-shooter game where you manipulate your space ship using right and left thrusters (A and D) and fire lasers
