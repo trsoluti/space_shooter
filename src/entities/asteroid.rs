@@ -81,8 +81,8 @@ pub fn locate_asteroid(asteroid: &Asteroid, screen_width: f32, screen_height: f3
     let max_width = screen_width - asteroid.width;
     let min_height = screen_height + GAME_CONFIGURATION.wait_for_first_asteroid * GAME_CONFIGURATION.asteroid_velocity;
     let max_height = min_height +  (screen_height * GAME_CONFIGURATION.asteroid_velocity) / GAME_CONFIGURATION.asteroid_density;
-    let pos_x = random_number_generator.next_f32()*max_width;
-    let pos_y = min_height + random_number_generator.next_f32()*(max_height-min_height);
+    let pos_x = random_number_generator.gen::<f32>()*max_width;
+    let pos_y = min_height + random_number_generator.gen::<f32>()*(max_height-min_height);
 
     let mut local_transform = Transform::default();
     local_transform.translation = Vector3::new(pos_x, pos_y, 0.0);
