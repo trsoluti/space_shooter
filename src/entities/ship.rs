@@ -1,5 +1,6 @@
 //! Manage the ship entity
 
+use amethyst::prelude::Builder;
 use amethyst::ecs::prelude::{Entity, World};
 use amethyst::core::cgmath::Vector3;
 use amethyst::core::transform::{Transform, GlobalTransform};

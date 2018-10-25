@@ -22,7 +22,7 @@ pub mod laser;
 pub mod lives;
 
 use amethyst::ecs::prelude::World;
-use amethyst::renderer::{PngFormat, Texture, PosTex, Mesh, Material, MaterialDefaults};
+use amethyst::renderer::{PngFormat, Texture, TextureMetadata, PosTex, Mesh, Material, MaterialDefaults};
 use amethyst::assets::{AssetStorage, Loader, Handle};
 
 pub use self::laser::fire_laser;
@@ -49,7 +49,7 @@ pub fn png_mesh_and_material(name: &'static str, png_size: [f32; 2], world: &mut
     let albedo = loader.load(
         name,
         PngFormat,
-        Default::default(),
+        TextureMetadata::srgb_scale(),
         (),
         &world.read_resource::<AssetStorage<Texture>>(),
     );

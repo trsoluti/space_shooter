@@ -83,6 +83,7 @@ pub use state::GameState;
 pub use bundle::GameBundle;
 
 use amethyst::prelude::*;
+use amethyst::utils::application_root_dir;
 use amethyst::core::transform::TransformBundle;
 use amethyst::renderer::{DisplayConfig, RenderBundle, Pipeline, Stage, DrawFlat, PosTex};
 use amethyst::ui::{DrawUi, UiBundle};
@@ -112,17 +113,17 @@ pub fn run() -> Result<(), amethyst::Error> {
     // Set the display configuration path to <package root>/resources/display_config.ron.
     let display_config_path = format!(
         "{}/resources/display_config.ron",
-        env!("CARGO_MANIFEST_DIR")
+        application_root_dir()
     );
     let display_config = DisplayConfig::load(&display_config_path);
 
     // Load up the key bindings path and the resources path
     let key_bindings_path = format!(
         "{}/resources/input.ron",
-        env!("CARGO_MANIFEST_DIR")
+        application_root_dir()
     );
 
-    let resources_path = format!("{}/assets", env!("CARGO_MANIFEST_DIR"));
+    let resources_path = format!("{}/assets", application_root_dir());
 
     // Create a pipeline that has three passes:
     // 1. setting the background to the background colour constant
@@ -144,7 +145,7 @@ pub fn run() -> Result<(), amethyst::Error> {
         .with_bundle(
             InputBundle::<String, String>::new().with_bindings_from_file(
                 &key_bindings_path
-            ),
+            )?,
         )?
         .with_bundle(GameBundle)?
         .with_bundle(TransformBundle::new())?
@@ -166,6 +167,7 @@ pub fn run() -> Result<(), amethyst::Error> {
 ///
 /// Let [run](run.v.html) do all the work, and just print out any error it generates.
 pub fn main() {
+    amethyst::start_logger(Default::default());
     if let Err(e) = run() {
         println!("Error occurred during game execution: {}", e);
         ::std::process::exit(1);

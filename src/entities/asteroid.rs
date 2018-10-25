@@ -18,6 +18,7 @@
 //! (destroyed) entities and re-uses the slots when you create new ones,
 //! so both methods have the same underlying implementation.)
 
+use amethyst::prelude::Builder;
 use amethyst::ecs::prelude::{Entity, World};
 use amethyst::core::transform::{GlobalTransform, Transform};
 use amethyst::core::cgmath::Vector3;

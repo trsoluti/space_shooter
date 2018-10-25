@@ -1,6 +1,7 @@
 
 use amethyst::prelude::*;
-use amethyst::winit::{Event, KeyboardInput, VirtualKeyCode, WindowEvent};
+use amethyst::input::{is_close_requested, is_key_down};
+use amethyst::winit::VirtualKeyCode;
 
 use entities::initialise_entities;
 use resources::add_resources;
@@ -18,7 +19,7 @@ use resources::{PlayState};
 pub struct GameState;
 
 
-impl<'a, 'b> State<GameData<'a, 'b>> for GameState {
+impl<'a, 'b> SimpleState<'a, 'b> for GameState {
     fn on_start(&mut self, state_data: StateData<GameData>) {
         let world = state_data.world;
         register_components(world);
@@ -26,32 +27,24 @@ impl<'a, 'b> State<GameData<'a, 'b>> for GameState {
         initialise_entities(world);
     }
 
-    fn handle_event(&mut self, _: StateData<GameData>, event: Event) -> Trans<GameData<'a, 'b>> {
-        match event {
-            Event::WindowEvent { event, .. } => match event {
-                WindowEvent::KeyboardInput {
-                    input:
-                    KeyboardInput {
-                        virtual_keycode: Some(VirtualKeyCode::Escape),
-                        ..
-                    },
-                    ..
-                } => Trans::Quit,
-                _ => Trans::None,
-            },
-            _ => Trans::None,
+    fn handle_event(&mut self, _: StateData<GameData>, event: StateEvent) -> SimpleTrans<'a, 'b> {
+        if let  StateEvent::Window(event) = event {
+            if is_close_requested(&event) || is_key_down(&event, VirtualKeyCode::Escape) {
+                return Trans::Quit
+            }
         }
+        Trans::None
     }
 
     // Stop the game if the ship runs out of lives
-    fn fixed_update(&mut self, state_data: StateData<GameData>) -> Trans<GameData<'a, 'b>> {
+    fn fixed_update(&mut self, state_data: StateData<GameData>) -> SimpleTrans<'a, 'b> {
         let world = state_data.world;
         let play_state = world.read_resource::<PlayState>();
         if play_state.lives == 0 { Trans::Quit} else { Trans::None }
     }
 
     // This code tells Amethyst to run all the systems in your game data.
-    fn update (&mut self, state_data: StateData<GameData>) -> Trans<GameData<'a, 'b>> {
+    fn update (&mut self, state_data: &mut StateData<GameData>) -> SimpleTrans<'a, 'b> {
         state_data.data.update(&state_data.world);
         Trans::None
     }

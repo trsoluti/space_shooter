@@ -1,6 +1,6 @@
 (
   axes: {
-    "ship": (
+    "ship": Emulated(
       pos: Key(A),
       neg: Key(D),
     ),
