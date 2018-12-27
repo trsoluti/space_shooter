@@ -2,9 +2,9 @@
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Join, System, ReadStorage, WriteStorage, Write};
 
-use components::Ship;
-use components::Asteroid;
-use resources::PlayState;
+use crate::components::Ship;
+use crate::components::Asteroid;
+use crate::resources::PlayState;
 
 /// Reduces the number of lives
 /// and marks the asteroid for repositioning
@@ -50,15 +50,15 @@ impl<'s> System<'s> for ShipCollisionSystem {
     fn run(&mut self, (mut play_state, ships, transforms, mut asteroids): Self::SystemData) {
         for (ship_component, ship_transform) in (&ships, &transforms).join() {
             // create a collision box for our ship
-            let ship_left = ship_transform.translation[0];
-            let ship_top = ship_transform.translation[1] + ship_component.height;
+            let ship_left = ship_transform.translation()[0];
+            let ship_top = ship_transform.translation()[1] + ship_component.height;
             let ship_right = ship_left + ship_component.width;
 
             // check to see if our ship has collided with any asteroid
             for (asteroid_component, asteroid_transform) in (&mut asteroids, &transforms).join() {
                 // create a collision box for our asteroid
-                let asteroid_left = asteroid_transform.translation[0];
-                let asteroid_bottom = asteroid_transform.translation[1];
+                let asteroid_left = asteroid_transform.translation()[0];
+                let asteroid_bottom = asteroid_transform.translation()[1];
                 let asteroid_right = asteroid_left + asteroid_component.width;
 
                 // if the two collision boxes overlap,

@@ -1,9 +1,9 @@
-use components::Ship;
-use resources::LaserResource;
-use entities::fire_laser;
-use config::GAME_CONFIGURATION;
+use crate::components::Ship;
+use crate::resources::LaserResource;
+use crate::entities::fire_laser;
+use crate::config::GAME_CONFIGURATION;
 
-use amethyst::core::cgmath::Vector3;
+use amethyst::core::nalgebra::Vector3;
 use amethyst::core::timing::Time;
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{ReadExpect, Join, System, WriteStorage, Entities, LazyUpdate};
@@ -85,11 +85,11 @@ impl<'s> System<'s> for ShipSystem {
                 // and sufficient time has passed since we last fired,
                 if action && ship.trigger_reset_timer <= 0.0 {
                     // fire from the middle top of the ship.
-                    let fire_position = Vector3{
-                        x: transform.translation[0] + ship.width / 2.0,
-                        y: transform.translation[1] + ship.height,
-                        z: 0.0,
-                    };
+                    let fire_position = Vector3::new(
+                        transform.translation()[0] + ship.width / 2.0,
+                        transform.translation()[1] + ship.height,
+                        0.0,
+                    );
                     fire_laser(&entities, &laser_resource, fire_position, &lazy_update);
 
                     // reset the timer so we can't fire again until the timeout has elapsed.
@@ -103,17 +103,17 @@ impl<'s> System<'s> for ShipSystem {
             }
 
             // move the ship according to its velocity
-            transform.translation[0] -= ship.velocity * time.delta_seconds();
+            transform.translate_x(-ship.velocity * time.delta_seconds());
 
             // make sure the ship stays on the screen
             let arena_width = 1024.;
             let max_position = arena_width - (ship.width/2.0);
-            if transform.translation[0] <= (-ship.width/2.0) {
-                transform.translation[0] = -ship.width/2.0;
+            if transform.translation()[0] <= (-ship.width/2.0) {
+                transform.set_x(-ship.width/2.0);
                 ship.velocity = -ship.velocity; // bounce off the left wall
-            } else if transform.translation[0] >= max_position {
-                transform.translation[0] = max_position;
-                ship.velocity = - ship.velocity; // bounce off right wall
+            } else if transform.translation()[0] >= max_position {
+                transform.set_x(max_position);
+                ship.velocity = -ship.velocity; // bounce off right wall
             }
         }
     }

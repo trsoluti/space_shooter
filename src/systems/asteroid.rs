@@ -3,8 +3,8 @@ use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Read, Join, System, WriteStorage};
 use rand::thread_rng;
 
-use components::Asteroid;
-use entities::locate_asteroid;
+use crate::components::Asteroid;
+use crate::entities::locate_asteroid;
 
 /// Moves the asteroid, either down by its velocity
 /// or to a new random location if it was marked for repositioning.
@@ -39,18 +39,18 @@ impl<'s> System<'s> for AsteroidSystem {
     fn run(&mut self, (mut asteroids, mut transforms, time): Self::SystemData) {
         for (asteroid, transform) in (&mut asteroids, &mut transforms).join() {
             // move the asteroid by its velocity
-            transform.translation[1] -= asteroid.velocity * time.delta_seconds();
+            transform.translate_y(-asteroid.velocity * time.delta_seconds());
 
             // If the asteroid falls below the bottom of the screen,
             // or if it got destroyed in another system,
             // "respawn" it somewhere way up
             // in an ECS, it's more efficient to re-use entities than to
             // destroy and re-create them.
-            if asteroid.is_destroyed || transform.translation[1] < (-asteroid.height) {
+            if asteroid.is_destroyed || transform.translation()[1] < (-asteroid.height) {
                 let mut rng = thread_rng();
                 let local_transform: Transform = locate_asteroid(asteroid, 1024., 1024., &mut rng);
-                transform.translation[0] = local_transform.translation[0];
-                transform.translation[1] = local_transform.translation[1];
+                transform.set_x(local_transform.translation()[0]);
+                transform.set_y(local_transform.translation()[1]);
                 asteroid.is_destroyed = false;
             }
         }

@@ -11,13 +11,13 @@
 //! The laser movement system will destroy the laser when it runs out of
 //! camera range or hits an asteroid.
 use amethyst::ecs::prelude::{World, Entities, Entity, LazyUpdate, ReadExpect};
-use amethyst::core::transform::{GlobalTransform, Transform};
-use amethyst::core::cgmath::Vector3;
+use amethyst::core::transform::{Transform};
+use amethyst::core::nalgebra::Vector3;
 
 use super::png_mesh_and_material;
-use config::GAME_CONFIGURATION;
-use components::Laser as LaserComponent;
-use resources::LaserResource;
+use crate::config::GAME_CONFIGURATION;
+use crate::components::Laser as LaserComponent;
+use crate::resources::LaserResource;
 
 /// Initialises the data we use to instantiate a laser when fired.
 ///
@@ -56,14 +56,14 @@ pub fn fire_laser(
     let laser_entity:Entity = entities.create();
     let local_transform = {
         let mut local_transform = Transform::default();
-        local_transform.translation = fire_position;
+        local_transform.set_position(fire_position);
         // the fire position actually represents the middle of our laser. Adjust accordingly.
-        local_transform.translation[0] -= laser_resource.component.width / 2.0;
+        let p = local_transform.translation()[0];
+        local_transform.set_x(p - laser_resource.component.width / 2.0);
         local_transform
     };
     lazy_update.insert(laser_entity, laser_resource.material.clone());
     lazy_update.insert(laser_entity, laser_resource.mesh.clone());
     lazy_update.insert(laser_entity, laser_resource.component.clone());
     lazy_update.insert(laser_entity, local_transform);
-    lazy_update.insert(laser_entity, GlobalTransform::default());
 }

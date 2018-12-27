@@ -56,17 +56,17 @@
 
 #![deny(missing_docs)]
 
-extern crate amethyst;
-extern crate serde;
-#[macro_use]
-extern crate serde_derive;
-#[macro_use]
-extern crate lazy_static;
-extern crate rand;
+//extern crate amethyst;
+//extern crate serde;
+//#[macro_use]
+//extern crate serde_derive;
+//#[macro_use]
+//extern crate lazy_static;
+//extern crate rand;
 // These next two crates are needed only for the arguments to with_transparency()
 // eventually this will be blended into Amethyst somehow.
-extern crate gfx;
-extern crate gfx_core;
+//extern crate gfx;
+//extern crate gfx_core;
 
 mod config;
 mod state;
@@ -77,10 +77,10 @@ pub mod systems;
 pub mod resources;
 
 // public use so these things get documented
-pub use config::GameConfiguration;
-pub use config::GAME_CONFIGURATION;
-pub use state::GameState;
-pub use bundle::GameBundle;
+pub use crate::config::GameConfiguration;
+pub use crate::config::GAME_CONFIGURATION;
+pub use crate::state::GameState;
+pub use crate::bundle::GameBundle;
 
 use amethyst::prelude::*;
 use amethyst::utils::application_root_dir;
@@ -110,20 +110,16 @@ const BACKGROUND_COLOUR: [f32; 4] = [0.25, 0.25, 0.25, 0.0]; // dark grey
 pub fn run() -> Result<(), amethyst::Error> {
     let _ = &config::GAME_CONFIGURATION; // initialises game constants
 
+    let application_root = application_root_dir()?;
+
     // Set the display configuration path to <package root>/resources/display_config.ron.
-    let display_config_path = format!(
-        "{}/resources/display_config.ron",
-        application_root_dir()
-    );
+    let display_config_path =  application_root.join("resources/display_config.ron");
     let display_config = DisplayConfig::load(&display_config_path);
 
     // Load up the key bindings path and the resources path
-    let key_bindings_path = format!(
-        "{}/resources/input.ron",
-        application_root_dir()
-    );
+    let key_bindings_path = application_root.join("resources/input.ron");
 
-    let resources_path = format!("{}/assets", application_root_dir());
+    let resources_path = application_root.join("assets");
 
     // Create a pipeline that has three passes:
     // 1. setting the background to the background colour constant

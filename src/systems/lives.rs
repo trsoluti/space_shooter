@@ -1,8 +1,8 @@
 
 use amethyst::ecs::prelude::{Read, Join, System, ReadStorage, Entities};
 
-use components::Life;
-use resources::PlayState;
+use crate::components::Life;
+use crate::resources::PlayState;
 
 /// Manages the list of life icons in the UI layer based on the play state
 ///

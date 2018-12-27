@@ -2,7 +2,7 @@
 
 use amethyst::prelude::Builder;
 use amethyst::ecs::prelude::{Entity, World};
-use amethyst::core::cgmath::Vector3;
+use amethyst::core::nalgebra::Vector3;
 use amethyst::core::transform::{Transform, GlobalTransform};
 
 use super::png_mesh_and_material;
@@ -12,7 +12,7 @@ const SHIP_WIDTH:f32 = 105.0;
 const SHIP_HEIGHT:f32 = 83.0;
 
 
-use components::Ship;
+use crate::components::Ship;
 
 /// Initialises the player's ship at the bottom centre of the screen
 ///
@@ -34,7 +34,7 @@ pub fn initialise_ship(world: &mut World) -> Entity {
 
     // Set the scale and position of our ship sprite:
     let mut local_transform = Transform::default();
-    local_transform.translation = Vector3::new(width/2.0 - SHIP_WIDTH/2.0, 0.0, 0.0);
+    local_transform.set_position(Vector3::new(width/2.0 - SHIP_WIDTH/2.0, 0.0, 0.0));
 
     // Create a new entity by bundling the mesh, material, component and transforms together
     // then return the entity we created.

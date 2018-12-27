@@ -24,6 +24,7 @@ pub mod lives;
 use amethyst::ecs::prelude::World;
 use amethyst::renderer::{PngFormat, Texture, TextureMetadata, PosTex, Mesh, Material, MaterialDefaults};
 use amethyst::assets::{AssetStorage, Loader, Handle};
+use amethyst::core::nalgebra::{Vector2, Vector3};
 
 pub use self::laser::fire_laser;
 pub use self::asteroid::locate_asteroid;
@@ -76,28 +77,28 @@ pub fn png_mesh_and_material(name: &'static str, png_size: [f32; 2], world: &mut
 pub fn create_png_vertices(left: f32, bottom: f32, right:f32, top:f32) -> Vec<PosTex> {
     vec![
         PosTex {
-            position: [left, bottom, 0.0],
-            tex_coord: [0.0, 0.0],
+            position: Vector3::new(left, bottom, 0.0),
+            tex_coord: Vector2::new(0.0, 0.0),
         },
         PosTex {
-            position: [right, bottom, 0.0],
-            tex_coord: [1.0, 0.0],
+            position: Vector3::new(right, bottom, 0.0),
+            tex_coord: Vector2::new(1.0, 0.0),
         },
         PosTex {
-            position: [left, top, 0.0],
-            tex_coord: [0.0, 1.0],
+            position: Vector3::new(left, top, 0.0),
+            tex_coord: Vector2::new(0.0, 1.0),
         },
         PosTex {
-            position: [right, top, 0.0],
-            tex_coord: [1.0, 1.0],
+            position: Vector3::new(right, top, 0.0),
+            tex_coord: Vector2::new(1.0, 1.0),
         },
         PosTex {
-            position: [left, top, 0.],
-            tex_coord: [0.0, 1.0],
+            position: Vector3::new(left, top, 0.),
+            tex_coord: Vector2::new(0.0, 1.0),
         },
         PosTex {
-            position: [right, bottom, 0.0],
-            tex_coord: [1.0, 0.0],
+            position: Vector3::new(right, bottom, 0.0),
+            tex_coord: Vector2::new(1.0, 0.0),
         },
     ]
 }

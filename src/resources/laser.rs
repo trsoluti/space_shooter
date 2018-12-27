@@ -1,7 +1,7 @@
 
 use amethyst::renderer::{Material, Mesh};
 use amethyst::assets::Handle;
-use components::Laser as LaserComponent;
+use crate::components::Laser as LaserComponent;
 
 /// The resource containing data we need to create a laser entity.
 ///

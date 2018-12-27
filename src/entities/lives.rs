@@ -6,7 +6,7 @@ use amethyst::renderer::{PngFormat, Texture, TextureMetadata};
 use amethyst::ui::{UiImage, UiTransform, Anchor};
 use amethyst::assets::{AssetStorage, Loader};
 
-use components::Life;
+use crate::components::Life;
 
 const LIFE_WIDTH:f32 = 32.;
 const LIFE_HEIGHT:f32 = 26.;
@@ -53,6 +53,7 @@ pub fn initialise_lives(world: &mut World) -> Vec<Entity> {
                 .with(UiImage {
                     texture: logo.clone(),
                 })
+                //.with(logo.clone())
                 .with(Life{life_number:i})
                 .build()
         );

@@ -3,8 +3,8 @@ use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Entities, Join, System, ReadStorage, WriteStorage, Read};
 use amethyst::core::timing::Time;
 
-use components::Laser;
-use config::GAME_CONFIGURATION;
+use crate::components::Laser;
+use crate::config::GAME_CONFIGURATION;
 
 /// Moves the laser and deletes it if it goes off the screen
 ///
@@ -50,10 +50,10 @@ impl<'s> System<'s> for LaserSystem {
     fn run(&mut self, (entities, lasers, mut transforms, time): Self::SystemData) {
         // Scan through the list of lasers and move them forward.
         for (laser_entity, _laser_component, laser_transform) in (&*entities, &lasers, &mut transforms).join() {
-            laser_transform.translation[1] += GAME_CONFIGURATION.laser_velocity * time.delta_seconds();
+            laser_transform.translate_y(GAME_CONFIGURATION.laser_velocity * time.delta_seconds());
 
             // Delete the laser if it has gone off the screen
-            if laser_transform.translation[1] > 1024. {
+            if laser_transform.translation()[1] > 1024. {
                 let _result = entities.delete(laser_entity);
             }
         }

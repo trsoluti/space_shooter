@@ -6,6 +6,6 @@
     ),
   },
   actions: {
-    "fire": [Key(Space)],
+    "fire": [ [Key(Space)] ],
   },
 )

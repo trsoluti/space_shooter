@@ -3,7 +3,7 @@ use amethyst::prelude::Builder;
 use amethyst::ecs::prelude::{Entity, World};
 use amethyst::core::transform::GlobalTransform;
 use amethyst::renderer::{Camera, Projection};
-use amethyst::core::cgmath::{Matrix4, Vector3};
+use amethyst::core::nalgebra::{Matrix4, Vector3};
 
 
 /// Initialises a camera and adds it to the world.
@@ -19,12 +19,12 @@ pub fn initialise_camera(world: &mut World) -> Entity {
         .with(Camera::from( Projection::orthographic(
             0.0,
             1024.,
+            0.0,
             1024.,
-            0.0
         )))
         .with(GlobalTransform(
-            Matrix4::from_translation(
-                Vector3::new(0.0, 0.0, 1.0).into(),
+            Matrix4::new_translation(
+                &Vector3::new(0.0, 0.0, 1.0),
             )
         ))
         .build()
