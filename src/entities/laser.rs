@@ -25,7 +25,7 @@ use crate::resources::LaserResource;
 /// that will be attached to the entity when we create it in
 /// [fire_laser](fn.fire_laser.html).
 pub fn initialise_laser_resource(world: &mut World) -> LaserResource {
-    let (mesh, material) = png_mesh_and_material("PNG/Lasers/LaserRed01.png", [9.0,54.0], world);
+    let (mesh, material) = png_mesh_and_material("PNG/Lasers/laserRed01.png", [9.0,54.0], world);
     let laser_resource = LaserResource {
         mesh,
         material,
