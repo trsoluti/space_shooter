@@ -22,7 +22,7 @@ use amethyst::prelude::Builder;
 use amethyst::ecs::prelude::{Entity, World};
 use amethyst::core::transform::{GlobalTransform, Transform};
 use amethyst::core::nalgebra::Vector3;
-use rand::{Rng, ThreadRng, thread_rng};
+use rand::{Rng, rngs::ThreadRng, thread_rng};
 
 use super::png_mesh_and_material;
 use crate::config::GAME_CONFIGURATION;

@@ -1,6 +1,6 @@
 [package]
 name = "space_shooter"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["trsoluti <thomas_odell@trsolutions.biz>"]
 edition = "2018"
 
@@ -8,7 +8,7 @@ edition = "2018"
 #amethyst = { path = "../../../Rust/amethyst" }
 amethyst = "0.10"
 lazy_static = "*"
-rand = "0.5" # 0.6 doesn't want to compile on my machine.
+rand = "*"
 serde = "*"
 serde_derive = "*"
 gfx_core = "*"
