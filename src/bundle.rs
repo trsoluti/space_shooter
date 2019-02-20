@@ -1,6 +1,7 @@
 
 
-use amethyst::core::bundle::{SystemBundle, Result};
+use amethyst::core::bundle::{SystemBundle};
+use amethyst::Result;
 use amethyst::ecs::prelude::{DispatcherBuilder};
 
 //use components::*;

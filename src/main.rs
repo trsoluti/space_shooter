@@ -111,28 +111,28 @@ pub fn run() -> Result<(), amethyst::Error> {
     let _ = &config::GAME_CONFIGURATION; // initialises game constants
 
     // For Amethyst 0.11+ when it comes out:
-    //-let application_root = application_root_dir()?;
+    let application_root = application_root_dir()?;
 
     // Set the display configuration path to <package root>/resources/display_config.ron.
-    //-let display_config_path =  application_root.join("resources/display_config.ron");
-    //-let display_config = DisplayConfig::load(&display_config_path);
-
-    // Load up the key bindings path and the resources path
-    //-let key_bindings_path = application_root.join("resources/input.ron");
-
-    //-let resources_path = application_root.join("assets");
-
-    // For Amethyst 0.10:
-    let application_root = application_root_dir();
-
-    // Set the display configuration path to <package root>/resources/display_config.ron.
-    let display_config_path =  format!("{}/resources/display_config.ron", application_root);
+    let display_config_path =  application_root.join("resources/display_config.ron");
     let display_config = DisplayConfig::load(&display_config_path);
 
     // Load up the key bindings path and the resources path
-    let key_bindings_path = format!("{}/resources/input.ron", application_root);
+    let key_bindings_path = application_root.join("resources/input.ron");
 
-    let resources_path = format!("{}/assets", application_root);
+    let resources_path = application_root.join("assets");
+
+    // For Amethyst 0.10:
+    //-let application_root = application_root_dir();
+
+    // Set the display configuration path to <package root>/resources/display_config.ron.
+    //-let display_config_path =  format!("{}/resources/display_config.ron", application_root);
+    //-let display_config = DisplayConfig::load(&display_config_path);
+
+    // Load up the key bindings path and the resources path
+    //-let key_bindings_path = format!("{}/resources/input.ron", application_root);
+
+    //-let resources_path = format!("{}/assets", application_root);
 
     // Create a pipeline that has three passes:
     // 1. setting the background to the background colour constant
@@ -143,7 +143,7 @@ pub fn run() -> Result<(), amethyst::Error> {
             .with_stage(
                 Stage::with_backbuffer()
                     .clear_target(BACKGROUND_COLOUR, 1.0)
-                    .with_pass(DrawFlat::<PosTex>::new().with_transparency(ColorMask::all(), ALPHA, None))
+                    .with_pass(DrawFlat::<PosTex>::new().with_transparency_settings(ColorMask::all(), ALPHA, None))
                     .with_pass(DrawUi::new())
             )
 

@@ -3,7 +3,7 @@
 use amethyst::prelude::Builder;
 use amethyst::ecs::prelude::{Entity, World};
 use amethyst::renderer::{PngFormat, Texture, TextureMetadata};
-use amethyst::ui::{UiImage, UiTransform, Anchor};
+use amethyst::ui::{/*UiImage,*/ UiTransform, Anchor};
 use amethyst::assets::{AssetStorage, Loader};
 
 use crate::components::Life;
@@ -48,11 +48,10 @@ pub fn initialise_lives(world: &mut World) -> Vec<Entity> {
                     0.,
                     LIFE_WIDTH,
                     LIFE_HEIGHT,
-                    0,
                 ))
-                .with(UiImage {
+                .with(/*UiImage {
                     texture: logo.clone(),
-                })
+                }*/ logo.clone())
                 //.with(logo.clone())
                 .with(Life{life_number:i})
                 .build()
