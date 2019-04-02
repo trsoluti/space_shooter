@@ -3,7 +3,8 @@ use amethyst::prelude::Builder;
 use amethyst::ecs::prelude::{Entity, World};
 use amethyst::core::transform::GlobalTransform;
 use amethyst::renderer::{Camera, Projection};
-use amethyst::core::nalgebra::{Matrix4, Vector3};
+use amethyst::core::math::{Matrix4, Vector3};
+
 
 
 /// Initialises a camera and adds it to the world.

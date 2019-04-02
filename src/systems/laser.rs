@@ -50,7 +50,7 @@ impl<'s> System<'s> for LaserSystem {
     fn run(&mut self, (entities, lasers, mut transforms, time): Self::SystemData) {
         // Scan through the list of lasers and move them forward.
         for (laser_entity, _laser_component, laser_transform) in (&*entities, &lasers, &mut transforms).join() {
-            laser_transform.translate_y(GAME_CONFIGURATION.laser_velocity * time.delta_seconds());
+            laser_transform.prepend_translation_y(GAME_CONFIGURATION.laser_velocity * time.delta_seconds());
 
             // Delete the laser if it has gone off the screen
             if laser_transform.translation()[1] > 1024. {

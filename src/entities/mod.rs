@@ -24,7 +24,7 @@ pub mod lives;
 use amethyst::ecs::prelude::World;
 use amethyst::renderer::{PngFormat, Texture, TextureMetadata, PosTex, Mesh, Material, MaterialDefaults};
 use amethyst::assets::{AssetStorage, Loader, Handle};
-use amethyst::core::nalgebra::{Vector2, Vector3};
+use amethyst::core::math::{Vector2, Vector3};
 
 pub use self::laser::fire_laser;
 pub use self::asteroid::locate_asteroid;

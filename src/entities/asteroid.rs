@@ -21,7 +21,7 @@
 use amethyst::prelude::Builder;
 use amethyst::ecs::prelude::{Entity, World};
 use amethyst::core::transform::{GlobalTransform, Transform};
-use amethyst::core::nalgebra::Vector3;
+use amethyst::core::math::Vector3;
 use rand::{Rng, rngs::ThreadRng, thread_rng};
 
 use super::png_mesh_and_material;
@@ -86,6 +86,6 @@ pub fn locate_asteroid(asteroid: &Asteroid, screen_width: f32, screen_height: f3
     let pos_y = min_height + random_number_generator.gen::<f32>()*(max_height-min_height);
 
     let mut local_transform = Transform::default();
-    local_transform.set_position(Vector3::new(pos_x, pos_y, 0.0));
+    local_transform.set_translation(Vector3::new(pos_x, pos_y, 0.0));
     local_transform
 }

@@ -12,7 +12,7 @@
 //! camera range or hits an asteroid.
 use amethyst::ecs::prelude::{World, Entities, Entity, LazyUpdate, ReadExpect};
 use amethyst::core::transform::{Transform};
-use amethyst::core::nalgebra::Vector3;
+use amethyst::core::math::Vector3;
 
 use super::png_mesh_and_material;
 use crate::config::GAME_CONFIGURATION;
@@ -56,10 +56,10 @@ pub fn fire_laser(
     let laser_entity:Entity = entities.create();
     let local_transform = {
         let mut local_transform = Transform::default();
-        local_transform.set_position(fire_position);
+        local_transform.set_translation(fire_position);
         // the fire position actually represents the middle of our laser. Adjust accordingly.
         let p = local_transform.translation()[0];
-        local_transform.set_x(p - laser_resource.component.width / 2.0);
+        local_transform.set_translation_x(p - laser_resource.component.width / 2.0);
         local_transform
     };
     lazy_update.insert(laser_entity, laser_resource.material.clone());

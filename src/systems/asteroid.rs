@@ -39,7 +39,7 @@ impl<'s> System<'s> for AsteroidSystem {
     fn run(&mut self, (mut asteroids, mut transforms, time): Self::SystemData) {
         for (asteroid, transform) in (&mut asteroids, &mut transforms).join() {
             // move the asteroid by its velocity
-            transform.translate_y(-asteroid.velocity * time.delta_seconds());
+            transform.prepend_translation_y(-asteroid.velocity * time.delta_seconds());
 
             // If the asteroid falls below the bottom of the screen,
             // or if it got destroyed in another system,
@@ -49,8 +49,8 @@ impl<'s> System<'s> for AsteroidSystem {
             if asteroid.is_destroyed || transform.translation()[1] < (-asteroid.height) {
                 let mut rng = thread_rng();
                 let local_transform: Transform = locate_asteroid(asteroid, 1024., 1024., &mut rng);
-                transform.set_x(local_transform.translation()[0]);
-                transform.set_y(local_transform.translation()[1]);
+                transform.set_translation_x(local_transform.translation()[0]);
+                transform.set_translation_y(local_transform.translation()[1]);
                 asteroid.is_destroyed = false;
             }
         }

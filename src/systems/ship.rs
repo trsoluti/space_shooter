@@ -3,7 +3,7 @@ use crate::resources::LaserResource;
 use crate::entities::fire_laser;
 use crate::config::GAME_CONFIGURATION;
 
-use amethyst::core::nalgebra::Vector3;
+use amethyst::core::math::Vector3;
 use amethyst::core::timing::Time;
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{ReadExpect, Join, System, WriteStorage, Entities, LazyUpdate};
@@ -103,16 +103,16 @@ impl<'s> System<'s> for ShipSystem {
             }
 
             // move the ship according to its velocity
-            transform.translate_x(-ship.velocity * time.delta_seconds());
+            transform.prepend_translation_x(-ship.velocity * time.delta_seconds());
 
             // make sure the ship stays on the screen
             let arena_width = 1024.;
             let max_position = arena_width - (ship.width/2.0);
             if transform.translation()[0] <= (-ship.width/2.0) {
-                transform.set_x(-ship.width/2.0);
+                transform.set_translation_x(-ship.width/2.0);
                 ship.velocity = -ship.velocity; // bounce off the left wall
             } else if transform.translation()[0] >= max_position {
-                transform.set_x(max_position);
+                transform.set_translation_x(max_position);
                 ship.velocity = -ship.velocity; // bounce off right wall
             }
         }
