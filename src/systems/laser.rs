@@ -27,7 +27,7 @@ impl<'s> System<'s> for LaserSystem {
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Laser>,
-        WriteStorage<'s, Transform>,
+        WriteStorage<'s, Transform<f32>>,
         Read<'s, Time>,
     );
 

@@ -29,7 +29,7 @@ impl<'s> System<'s> for ShipCollisionSystem {
     type SystemData = (
         Write<'s, PlayState>,
         ReadStorage<'s, Ship>,
-        ReadStorage<'s, Transform>,
+        ReadStorage<'s, Transform<f32>>,
         WriteStorage<'s, Asteroid>,
     );
 
