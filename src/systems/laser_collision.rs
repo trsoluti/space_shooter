@@ -24,7 +24,7 @@ impl<'s> System<'s> for LaserCollisionSystem {
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Laser>,
-        ReadStorage<'s, Transform>,
+        ReadStorage<'s, Transform<f32>>,
         WriteStorage<'s, Asteroid>,
     );
 

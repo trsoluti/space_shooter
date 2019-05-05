@@ -3,7 +3,7 @@
 use amethyst::prelude::Builder;
 use amethyst::ecs::prelude::{Entity, World};
 use amethyst::core::math::Vector3;
-use amethyst::core::transform::{Transform, GlobalTransform};
+use amethyst::core::transform::{Transform/*, GlobalTransform*/};
 
 use super::png_mesh_and_material;
 
@@ -48,6 +48,6 @@ pub fn initialise_ship(world: &mut World) -> Entity {
             height: SHIP_HEIGHT,
             trigger_reset_timer: 0.0})
         .with(local_transform)
-        .with(GlobalTransform::default())
+        /*.with(GlobalTransform::default())*/
         .build()
 }

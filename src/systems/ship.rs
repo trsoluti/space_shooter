@@ -44,7 +44,7 @@ impl<'s> System<'s> for ShipSystem {
     type SystemData = (
         Entities<'s>,
         WriteStorage<'s, Ship>,
-        WriteStorage<'s, Transform>,
+        WriteStorage<'s, Transform<f32>>,
         ReadExpect<'s, Time>,
         ReadExpect<'s, InputHandler<String, String>>,
         ReadExpect<'s, LaserResource>,

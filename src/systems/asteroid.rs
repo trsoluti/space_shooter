@@ -22,7 +22,7 @@ impl<'s> System<'s> for AsteroidSystem {
     ///                            has elapsed since we last ran this system
     type SystemData = (
         WriteStorage<'s, Asteroid>,
-        WriteStorage<'s, Transform>,
+        WriteStorage<'s, Transform<f32>>,
         Read<'s, Time>,
     );
 
@@ -48,7 +48,7 @@ impl<'s> System<'s> for AsteroidSystem {
             // destroy and re-create them.
             if asteroid.is_destroyed || transform.translation()[1] < (-asteroid.height) {
                 let mut rng = thread_rng();
-                let local_transform: Transform = locate_asteroid(asteroid, 1024., 1024., &mut rng);
+                let local_transform = locate_asteroid(asteroid, 1024., 1024., &mut rng);
                 transform.set_translation_x(local_transform.translation()[0]);
                 transform.set_translation_y(local_transform.translation()[1]);
                 asteroid.is_destroyed = false;

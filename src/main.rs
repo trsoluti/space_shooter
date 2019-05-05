@@ -143,7 +143,7 @@ pub fn run() -> Result<(), amethyst::Error> {
             .with_stage(
                 Stage::with_backbuffer()
                     .clear_target(BACKGROUND_COLOUR, 1.0)
-                    .with_pass(DrawFlat::<PosTex>::new().with_transparency_settings(ColorMask::all(), ALPHA, None))
+                    .with_pass(DrawFlat::<PosTex, f32>::new().with_transparency_settings(ColorMask::all(), ALPHA, None))
                     .with_pass(DrawUi::new())
             )
 
@@ -157,9 +157,9 @@ pub fn run() -> Result<(), amethyst::Error> {
             )?,
         )?
         .with_bundle(GameBundle)?
-        .with_bundle(TransformBundle::new())?
+        .with_bundle(TransformBundle::<f32>::new())?
         .with_bundle(UiBundle::<String, String>::new())?
-        .with_bundle(RenderBundle::new(pipe, Some(display_config)))?;
+        .with_bundle(RenderBundle::<'_, _, _, f32>::new(pipe, Some(display_config)))?;
 
     // Create a game with out game data and our GameState.
     let mut game = Application::new(

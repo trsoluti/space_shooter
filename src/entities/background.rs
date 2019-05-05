@@ -11,7 +11,7 @@ pub fn initialise_background(world: &mut World) -> Entity {
 
     let (mesh, background) = png_mesh_and_material("Backgrounds/darkPurple.png", [1024.0, 1024.0], world);
 
-    let /*mut*/ local_transform = Transform::default();
+    let /*mut*/ local_transform = Transform::<f32>::default();
     //local_transform.translation = Vector3::new(0.0, 0.0, 0.0); // think this is now the default
 
     world
