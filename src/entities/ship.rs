@@ -33,7 +33,7 @@ pub fn initialise_ship(world: &mut World) -> Entity {
     };
 
     // Set the scale and position of our ship sprite:
-    let mut local_transform = Transform::default();
+    let mut local_transform = Transform::<f32>::default();
     local_transform.set_translation(Vector3::new(width/2.0 - SHIP_WIDTH/2.0, 0.0, 0.0));
 
     // Create a new entity by bundling the mesh, material, component and transforms together
