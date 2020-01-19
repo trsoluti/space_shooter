@@ -22,7 +22,7 @@ impl<'s> System<'s> for AsteroidSystem {
     ///                            has elapsed since we last ran this system
     type SystemData = (
         WriteStorage<'s, Asteroid>,
-        WriteStorage<'s, Transform<f32>>,
+        WriteStorage<'s, Transform>,
         Read<'s, Time>,
     );
 
@@ -46,7 +46,7 @@ impl<'s> System<'s> for AsteroidSystem {
             // "respawn" it somewhere way up
             // in an ECS, it's more efficient to re-use entities than to
             // destroy and re-create them.
-            if asteroid.is_destroyed || transform.translation()[1] < (-asteroid.height) {
+            if asteroid.is_destroyed || transform.translation()[1] < (-asteroid.height).into() {
                 let mut rng = thread_rng();
                 let local_transform = locate_asteroid(asteroid, 1024., 1024., &mut rng);
                 transform.set_translation_x(local_transform.translation()[0]);

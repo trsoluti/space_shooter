@@ -35,7 +35,7 @@ pub fn initialise_laser_resource(world: &mut World) -> LaserResource {
             height: 54.0,
         },
     };
-    world.add_resource(laser_resource.clone());
+    world.insert(laser_resource.clone());
     laser_resource
 }
 
@@ -50,7 +50,7 @@ pub fn initialise_laser_resource(world: &mut World) -> LaserResource {
 pub fn fire_laser(
     entities: &Entities,
     laser_resource: &ReadExpect<LaserResource>,
-    fire_position: Vector3<f32>,
+    fire_position: Vector3</*Float*/f32>,
     lazy_update: &ReadExpect<LazyUpdate>)
 {
     let laser_entity:Entity = entities.create();
@@ -59,7 +59,7 @@ pub fn fire_laser(
         local_transform.set_translation(fire_position);
         // the fire position actually represents the middle of our laser. Adjust accordingly.
         let p = local_transform.translation()[0];
-        local_transform.set_translation_x(p - laser_resource.component.width / 2.0);
+        local_transform.set_translation_x(p - (laser_resource.component.width / 2.0));
         local_transform
     };
     lazy_update.insert(laser_entity, laser_resource.material.clone());

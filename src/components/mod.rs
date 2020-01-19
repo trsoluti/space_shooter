@@ -11,6 +11,7 @@ mod laser;
 mod life;
 
 use amethyst::ecs::prelude::World;
+use amethyst::ecs::WorldExt;
 
 pub use self::ship::Ship;
 pub use self::asteroid::Asteroid;

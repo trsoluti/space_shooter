@@ -29,7 +29,7 @@ impl<'s> System<'s> for ShipCollisionSystem {
     type SystemData = (
         Write<'s, PlayState>,
         ReadStorage<'s, Ship>,
-        ReadStorage<'s, Transform<f32>>,
+        ReadStorage<'s, Transform>,
         WriteStorage<'s, Asteroid>,
     );
 
@@ -59,7 +59,7 @@ impl<'s> System<'s> for ShipCollisionSystem {
                 // create a collision box for our asteroid
                 let asteroid_left = asteroid_transform.translation()[0];
                 let asteroid_bottom = asteroid_transform.translation()[1];
-                let asteroid_right = asteroid_left + asteroid_component.width;
+                let asteroid_right = asteroid_left + asteroid_component.width/*.into()*/;
 
                 // if the two collision boxes overlap,
                 if ((ship_left <= asteroid_right && ship_left >= asteroid_left)

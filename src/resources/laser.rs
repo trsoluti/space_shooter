@@ -15,7 +15,7 @@ pub struct LaserResource {
     /// The mesh used to create a laser entity
     pub mesh: Handle<Mesh>,
     /// The material used to create a laser entity
-    pub material: Material,
+    pub material: Handle<Material>,
     /// The component used to create a laser entity
     pub component: LaserComponent,
 }

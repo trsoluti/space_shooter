@@ -2,6 +2,7 @@
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Entities, Join, System, ReadStorage, WriteStorage, Read};
 use amethyst::core::timing::Time;
+//use amethyst::core::Float;
 
 use crate::components::Laser;
 use crate::config::GAME_CONFIGURATION;
@@ -27,7 +28,7 @@ impl<'s> System<'s> for LaserSystem {
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Laser>,
-        WriteStorage<'s, Transform<f32>>,
+        WriteStorage<'s, Transform>,
         Read<'s, Time>,
     );
 
@@ -53,7 +54,7 @@ impl<'s> System<'s> for LaserSystem {
             laser_transform.prepend_translation_y(GAME_CONFIGURATION.laser_velocity * time.delta_seconds());
 
             // Delete the laser if it has gone off the screen
-            if laser_transform.translation()[1] > 1024. {
+            if laser_transform.translation()[1] > /*Float::from*/(1024.) {
                 let _result = entities.delete(laser_entity);
             }
         }

@@ -19,10 +19,11 @@
 //! so both methods have the same underlying implementation.)
 
 use amethyst::prelude::Builder;
-use amethyst::ecs::prelude::{Entity, World};
+use amethyst::ecs::prelude::{Entity, World, WorldExt};
 use amethyst::core::transform::Transform;
 use amethyst::core::math::Vector3;
-use rand::{Rng, ThreadRng, thread_rng};
+use rand::{Rng, /*ThreadRng,*/ thread_rng};
+use rand::ThreadRng;
 
 use super::png_mesh_and_material;
 use crate::config::GAME_CONFIGURATION;
@@ -78,7 +79,7 @@ pub fn initialise_asteroids(world: &mut World) -> Vec<Entity> {
 ///
 /// As well, the height of the field is the same as the screen size,
 /// so the asteroids will fall at continuously regular intervals.
-pub fn locate_asteroid(asteroid: &Asteroid, screen_width: f32, screen_height: f32, random_number_generator: &mut ThreadRng)->Transform<f32> {
+pub fn locate_asteroid(asteroid: &Asteroid, screen_width: f32, screen_height: f32, random_number_generator: &mut ThreadRng)->Transform {
     let max_width = screen_width - asteroid.width;
     let min_height = screen_height + GAME_CONFIGURATION.wait_for_first_asteroid * GAME_CONFIGURATION.asteroid_velocity;
     let max_height = min_height +  (screen_height * GAME_CONFIGURATION.asteroid_velocity) / GAME_CONFIGURATION.asteroid_density;

@@ -64,7 +64,7 @@ lazy_static! {
             "{}/resources/game_config.ron",
             env!("CARGO_MANIFEST_DIR")
         );
-        GameConfiguration::load(&game_config_path)
+        GameConfiguration::load(&game_config_path).unwrap()
     };
 
 }

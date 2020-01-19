@@ -8,6 +8,7 @@ use amethyst::core::timing::Time;
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{ReadExpect, Join, System, WriteStorage, Entities, LazyUpdate};
 use amethyst::input::InputHandler;
+use amethyst::input::StringBindings;
 
 /// Moves the ship and fires lasers based on user-provided input.
 ///
@@ -44,9 +45,9 @@ impl<'s> System<'s> for ShipSystem {
     type SystemData = (
         Entities<'s>,
         WriteStorage<'s, Ship>,
-        WriteStorage<'s, Transform<f32>>,
+        WriteStorage<'s, Transform>,
         ReadExpect<'s, Time>,
-        ReadExpect<'s, InputHandler<String, String>>,
+        ReadExpect<'s, InputHandler<StringBindings>>,
         ReadExpect<'s, LaserResource>,
         ReadExpect<'s, LazyUpdate>,
     );
@@ -86,9 +87,9 @@ impl<'s> System<'s> for ShipSystem {
                 if action && ship.trigger_reset_timer <= 0.0 {
                     // fire from the middle top of the ship.
                     let fire_position = Vector3::new(
-                        transform.translation()[0] + ship.width / 2.0,
+                        transform.translation()[0] + ship.width / 2.0/*.into()*/,
                         transform.translation()[1] + ship.height,
-                        0.0,
+                        0.0/*.into()*/,
                     );
                     fire_laser(&entities, &laser_resource, fire_position, &lazy_update);
 
@@ -106,10 +107,10 @@ impl<'s> System<'s> for ShipSystem {
             transform.prepend_translation_x(-ship.velocity * time.delta_seconds());
 
             // make sure the ship stays on the screen
-            let arena_width = 1024.;
-            let max_position = arena_width - (ship.width/2.0);
-            if transform.translation()[0] <= (-ship.width/2.0) {
-                transform.set_translation_x(-ship.width/2.0);
+            let arena_width = /*Float::from*/(1024.);
+            let max_position = arena_width - (ship.width/2.0/*.into()*/);
+            if transform.translation()[0] <= (-ship.width/2.0/*.into()*/) {
+                transform.set_translation_x(-ship.width/2.0/*.into()*/);
                 ship.velocity = -ship.velocity; // bounce off the left wall
             } else if transform.translation()[0] >= max_position {
                 transform.set_translation_x(max_position);

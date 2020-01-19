@@ -22,9 +22,13 @@ pub mod laser;
 pub mod lives;
 
 use amethyst::ecs::prelude::World;
-use amethyst::renderer::{PngFormat, Texture, TextureMetadata, PosTex, Mesh, Material, MaterialDefaults};
+use amethyst::ecs::prelude::WorldExt;
+use amethyst::renderer::{Texture, Mesh, Material, MaterialDefaults};
+use amethyst::renderer::formats::texture::ImageFormat;
+use amethyst::renderer::rendy::mesh::PosTex;
+use amethyst::renderer::rendy::mesh::MeshBuilder;
+use amethyst::renderer::types::MeshData;
 use amethyst::assets::{AssetStorage, Loader, Handle};
-use amethyst::core::math::{Vector2, Vector3};
 
 pub use self::laser::fire_laser;
 pub use self::asteroid::locate_asteroid;
@@ -44,13 +48,12 @@ pub fn initialise_entities(world: &mut World) {
 ///
 /// This code may end up being moved inside Amethyst, where it can get the size
 /// from the png file itself.
-pub fn png_mesh_and_material(name: &'static str, png_size: [f32; 2], world: &mut World)-> (Handle<Mesh>, Material) {
+pub fn png_mesh_and_material(name: &'static str, png_size: [f32; 2], world: &mut World)-> (Handle<Mesh>, Handle<Material>) {
     let loader = world.read_resource::<Loader>();
 
     let albedo = loader.load(
         name,
-        PngFormat,
-        TextureMetadata::srgb_scale(),
+        ImageFormat::default(),
         (),
         &world.read_resource::<AssetStorage<Texture>>(),
     );
@@ -62,13 +65,18 @@ pub fn png_mesh_and_material(name: &'static str, png_size: [f32; 2], world: &mut
         ..mat_defaults.0.clone()
     };
 
+    let material_handlers = &world.read_resource::<AssetStorage<Material>>();
+    let material_handle = loader.load_from_data(material, (),material_handlers);
+
     let vertices = create_png_vertices(0.0, 0.0,png_size[0],png_size[1]);
+    let mesh_builder = MeshBuilder::new().with_vertices(vertices);
 
     let mesh = loader.load_from_data(
-        vertices.into(),
+        /*vertices.into()*/mesh_builder.into(),
         (),
         &world.read_resource::<AssetStorage<Mesh>>());
-    (mesh, material)
+
+    (mesh, material_handle)
 }
 
 /// Creates a list of vertices which make a simple plane of the given dimensions.
@@ -77,28 +85,28 @@ pub fn png_mesh_and_material(name: &'static str, png_size: [f32; 2], world: &mut
 pub fn create_png_vertices(left: f32, bottom: f32, right:f32, top:f32) -> Vec<PosTex> {
     vec![
         PosTex {
-            position: Vector3::new(left, bottom, 0.0),
-            tex_coord: Vector2::new(0.0, 0.0),
+            position: [left, bottom, 0.].into(),
+            tex_coord: [0.0, 0.0].into(),
         },
         PosTex {
-            position: Vector3::new(right, bottom, 0.0),
-            tex_coord: Vector2::new(1.0, 0.0),
+            position: [right, bottom, 0.].into(),
+            tex_coord: [1.0, 0.0].into(),
         },
         PosTex {
-            position: Vector3::new(left, top, 0.0),
-            tex_coord: Vector2::new(0.0, 1.0),
+            position: [left, top, 0.].into(),
+            tex_coord: [0.0, 1.0].into(),
         },
         PosTex {
-            position: Vector3::new(right, top, 0.0),
-            tex_coord: Vector2::new(1.0, 1.0),
+            position: [right, top, 0.].into(),
+            tex_coord: [1.0, 1.0].into(),
         },
         PosTex {
-            position: Vector3::new(left, top, 0.),
-            tex_coord: Vector2::new(0.0, 1.0),
+            position: [left, top, 0.].into(),
+            tex_coord: [0.0, 1.0].into(),
         },
         PosTex {
-            position: Vector3::new(right, bottom, 0.0),
-            tex_coord: Vector2::new(1.0, 0.0),
+            position: [right, bottom, 0.0].into(),
+            tex_coord: [1.0, 0.0].into(),
         },
     ]
 }

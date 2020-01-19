@@ -6,6 +6,7 @@ use amethyst::ecs::prelude::{DispatcherBuilder};
 
 //use components::*;
 use crate::systems::*;
+use amethyst::prelude::World;
 //use resources::{PlayState};
 
 /// A bundle is a convenient way to initialise related resources, components and systems in a
@@ -18,7 +19,7 @@ use crate::systems::*;
 pub struct GameBundle;
 
 impl<'a, 'b> SystemBundle<'a, 'b> for GameBundle {
-    fn build(self, builder: &mut DispatcherBuilder<'a, 'b>) -> Result<()> {
+    fn build(self, _world: &mut World, builder: &mut DispatcherBuilder<'a, 'b>) -> Result<()> {
         builder.add(ShipSystem, "ship_system", &["input_system"]);
         builder.add(ShipCollisionSystem, "collision_system", &["ship_system"]);
         builder.add(AsteroidSystem, "asteroid_system", &["collision_system"]);

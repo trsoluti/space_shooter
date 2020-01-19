@@ -1,8 +1,8 @@
 //! Manage the camera entity
 use amethyst::prelude::Builder;
-use amethyst::ecs::prelude::{Entity, World};
+use amethyst::ecs::prelude::{Entity, World, WorldExt};
 use amethyst::core::transform::Transform;
-use amethyst::renderer::{Camera, Projection};
+use amethyst::renderer::camera::{Camera, Projection};
 
 
 
@@ -14,7 +14,7 @@ use amethyst::renderer::{Camera, Projection};
 ///
 /// Our sprite set happens to be scaled for a world of 1024 x 1024.
 pub fn initialise_camera(world: &mut World) -> Entity {
-    let mut transform = Transform::<f32>::default();
+    let mut transform = Transform::default();
     transform.set_translation_z(1.0);
     world
         .create_entity()
@@ -23,6 +23,8 @@ pub fn initialise_camera(world: &mut World) -> Entity {
             1024.,
             0.0,
             1024.,
+            0.1,
+            2000.0,
         )))
         .with(transform)
         .build()

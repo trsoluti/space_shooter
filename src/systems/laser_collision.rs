@@ -24,7 +24,7 @@ impl<'s> System<'s> for LaserCollisionSystem {
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Laser>,
-        ReadStorage<'s, Transform<f32>>,
+        ReadStorage<'s, Transform>,
         WriteStorage<'s, Asteroid>,
     );
 
@@ -41,15 +41,15 @@ impl<'s> System<'s> for LaserCollisionSystem {
         for (laser_entity, laser_component, laser_transform) in (&*entities, &lasers, &transforms).join() {
             // Set up the collision box for our laser:
             let laser_left = laser_transform.translation()[0];
-            let laser_right = laser_left + laser_component.width;
-            let laser_top = laser_transform.translation()[1] + laser_component.height;
+            let laser_right = laser_left + laser_component.width/*.into()*/;
+            let laser_top = laser_transform.translation()[1] + laser_component.height/*.into()*/;
 
             // scan our asteroids to see if we have hit any one of them
             for (asteroid_component, asteroid_transform) in (&mut asteroids, &transforms).join() {
                 // Set up a collision box for our asteroid
                 let asteroid_left = asteroid_transform.translation()[0];
                 let asteroid_bottom = asteroid_transform.translation()[1];
-                let asteroid_right = asteroid_left + asteroid_component.width;
+                let asteroid_right = asteroid_left + asteroid_component.width/*.into()*/;
 
                 // If the two items overlap,
                 if ((laser_left <= asteroid_right && laser_left >= asteroid_left)

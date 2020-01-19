@@ -1,9 +1,10 @@
 //! Manage the life entities
 
 use amethyst::prelude::Builder;
-use amethyst::ecs::prelude::{Entity, World};
-use amethyst::renderer::{PngFormat, Texture, TextureMetadata};
-use amethyst::ui::{/*UiImage,*/ UiTransform, Anchor};
+use amethyst::ecs::prelude::{Entity, World, WorldExt};
+use amethyst::renderer::Texture;
+use amethyst::renderer::formats::texture::ImageFormat;
+use amethyst::ui::{UiTransform, Anchor};
 use amethyst::assets::{AssetStorage, Loader};
 
 use crate::components::Life;
@@ -27,8 +28,7 @@ pub fn initialise_lives(world: &mut World) -> Vec<Entity> {
         let loader = world.read_resource::<Loader>();
         let life_texture = loader.load(
             "PNG/UI/playerLife1_blue.png",
-            PngFormat,
-            TextureMetadata::srgb_scale(),
+            ImageFormat::default(),
             (),
             &world.read_resource::<AssetStorage<Texture>>(),
         );
@@ -43,11 +43,12 @@ pub fn initialise_lives(world: &mut World) -> Vec<Entity> {
                 .with(UiTransform::new(
                     format!("life{}",i),
                     Anchor::TopLeft,
+                    Anchor::Middle,
                     f32::from(i) * LIFE_WIDTH,
                     -LIFE_HEIGHT,
                     0.,
                     LIFE_WIDTH,
-                    LIFE_HEIGHT,
+                    LIFE_HEIGHT
                 ))
                 .with(/*UiImage {
                     texture: logo.clone(),

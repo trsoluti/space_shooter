@@ -1,7 +1,7 @@
 //! Manage the ship entity
 
 use amethyst::prelude::Builder;
-use amethyst::ecs::prelude::{Entity, World};
+use amethyst::ecs::prelude::{Entity, World, WorldExt};
 use amethyst::core::math::Vector3;
 use amethyst::core::transform::Transform;
 
@@ -33,7 +33,7 @@ pub fn initialise_ship(world: &mut World) -> Entity {
     };
 
     // Set the scale and position of our ship sprite:
-    let mut local_transform = Transform::<f32>::default();
+    let mut local_transform = Transform::default();
     local_transform.set_translation(Vector3::new(width/2.0 - SHIP_WIDTH/2.0, 0.0, 0.0));
 
     // Create a new entity by bundling the mesh, material, component and transforms together
@@ -44,8 +44,8 @@ pub fn initialise_ship(world: &mut World) -> Entity {
         .with(material)
         .with(Ship {
             velocity: 0.0, // ship starts out stationary
-            width: SHIP_WIDTH,
-            height: SHIP_HEIGHT,
+            width: SHIP_WIDTH.into(),
+            height: SHIP_HEIGHT.into(),
             trigger_reset_timer: 0.0})
         .with(local_transform)
         .build()
