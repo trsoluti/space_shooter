@@ -19,21 +19,29 @@ use crate::config::GAME_CONFIGURATION;
 use crate::components::Laser as LaserComponent;
 use crate::resources::LaserResource;
 
+use amethyst::assets::Handle;
+use amethyst::renderer::SpriteSheet;
+use amethyst::renderer::SpriteRender;
+
 /// Initialises the data we use to instantiate a laser when fired.
 ///
 /// This function creates a mesh, a material and a component
 /// that will be attached to the entity when we create it in
 /// [fire_laser](fn.fire_laser.html).
-pub fn initialise_laser_resource(world: &mut World) -> LaserResource {
-    let (mesh, material) = png_mesh_and_material("PNG/Lasers/laserRed01.png", [9.0,54.0], world);
+pub fn initialise_laser_resource(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) -> LaserResource {
+    //let (mesh, material) = png_mesh_and_material("PNG/Lasers/laserRed01.png", [9.0,54.0], world);
     let laser_resource = LaserResource {
-        mesh,
-        material,
+//        mesh,
+//        material,
         component: LaserComponent {
             velocity: GAME_CONFIGURATION.laser_velocity,
             width: 9.0,
             height: 54.0,
         },
+        sprite_render: SpriteRender {
+            sprite_sheet: sprite_sheet_handle.clone(),
+            sprite_number: 1
+        }
     };
     world.insert(laser_resource.clone());
     laser_resource
@@ -62,8 +70,9 @@ pub fn fire_laser(
         local_transform.set_translation_x(p - (laser_resource.component.width / 2.0));
         local_transform
     };
-    lazy_update.insert(laser_entity, laser_resource.material.clone());
-    lazy_update.insert(laser_entity, laser_resource.mesh.clone());
+//    lazy_update.insert(laser_entity, laser_resource.material.clone());
+//    lazy_update.insert(laser_entity, laser_resource.mesh.clone());
     lazy_update.insert(laser_entity, laser_resource.component.clone());
+    lazy_update.insert(laser_entity, laser_resource.sprite_render.clone());
     lazy_update.insert(laser_entity, local_transform);
 }

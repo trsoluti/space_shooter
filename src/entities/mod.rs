@@ -25,6 +25,8 @@ use amethyst::ecs::prelude::World;
 use amethyst::ecs::prelude::WorldExt;
 use amethyst::renderer::{Texture, Mesh, Material, MaterialDefaults};
 use amethyst::renderer::formats::texture::ImageFormat;
+use amethyst::renderer::SpriteSheet;
+use amethyst::renderer::SpriteSheetFormat;
 use amethyst::renderer::rendy::mesh::PosTex;
 use amethyst::renderer::rendy::mesh::MeshBuilder;
 use amethyst::renderer::types::MeshData;
@@ -35,11 +37,21 @@ pub use self::asteroid::locate_asteroid;
 
 /// Initialises all the entities (some are just set up as resources so the entities can be created later on demand)
 pub fn initialise_entities(world: &mut World) {
+    let sprite_sheet_handle = {
+        let texture_handle = {
+            let loader = world.read_resource::<Loader>();
+            let texture_storage = world.read_resource::<AssetStorage<Texture>>();
+            loader.load("Spritesheet/sheet.png", ImageFormat::default(), (), &texture_storage)
+        };
+        let loader = world.read_resource::<Loader>();
+        let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
+        loader.load("Spritesheet/sheet.ron", SpriteSheetFormat(texture_handle), (), &sprite_sheet_store)
+    };
     background::initialise_background(world);
-    ship::initialise_ship(world);
-    asteroid::initialise_asteroids(world);
+    ship::initialise_ship(world, sprite_sheet_handle.clone());
+    asteroid::initialise_asteroids(world, sprite_sheet_handle.clone());
     camera::initialise_camera(world);
-    laser::initialise_laser_resource(world);
+    laser::initialise_laser_resource(world, sprite_sheet_handle.clone());
     lives::initialise_lives(world);
 }
 

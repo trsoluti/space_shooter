@@ -168,7 +168,7 @@ pub fn run() -> Result<(), amethyst::Error> {
         .with_bundle(
             InputBundle::<StringBindings>::new()
                 .with_bindings_from_file(
-                    &key_bindings_path
+                    key_bindings_path
             )?,
         )?
         .with_bundle(GameBundle)?
@@ -196,6 +196,10 @@ pub fn run() -> Result<(), amethyst::Error> {
         resources_path,
         GameState,
         game_data)?;
+
+    // The way Pong does it (perhaps because want to add frame rate)
+//    let mut game = Application::build(resources_path, GameState::default())?
+//        .build(game_data)?;
 
     Ok(
         game.run(),

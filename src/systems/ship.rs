@@ -87,7 +87,7 @@ impl<'s> System<'s> for ShipSystem {
                 if action && ship.trigger_reset_timer <= 0.0 {
                     // fire from the middle top of the ship.
                     let fire_position = Vector3::new(
-                        transform.translation()[0] + ship.width / 2.0/*.into()*/,
+                        transform.translation()[0] /*+ ship.width / 2.0*//*.into()*/,
                         transform.translation()[1] + ship.height,
                         0.0/*.into()*/,
                     );

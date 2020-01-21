@@ -1,0 +1,42 @@
+/*!
+    @import /amethyst_rendy/src/sprite/mod.rs#Sprites
+    Sprites
+*/
+
+List((
+    // Width of the texture used by the sprite sheet
+    texture_width: 1024,
+    // Height of the texture used by the sprite sheet
+    texture_height: 1024,
+    // List of sprites the sheet holds
+    sprites: [
+        (
+            // 	0: <SubTexture name="enemyBlue3.png" x="222" y="0" width="103" height="84"/>
+            // Horizontal position of the ship sprite in the sprite sheet
+            x: 222,
+            // Vertical position of the ship sprite in the sprite sheet
+            y: 0,
+            // Width of the ship sprite
+            width: 103,
+            // Height of the ship sprite
+            height: 84,
+            // Number of pixels to shift the ship sprite to the left and down relative to the entity holding it when rendering
+            offsets: Some((0.0, 0.0)), // This is optional and defaults to (0.0, 0.0)
+        ),
+        (
+            // 1: <SubTexture name="laserRed01.png" x="858" y="230" width="9" height="54"/>
+            x: 858,
+            y: 230,
+            width: 9,
+            height: 54,
+        ),
+        (
+            // 2: <SubTexture name="meteorBrown_med1.png" x="651" y="447" width="43" height="43"/>
+            x: 651,
+            y: 447,
+            width: 43,
+            height: 43,
+        )
+        // etc...
+    ],
+))

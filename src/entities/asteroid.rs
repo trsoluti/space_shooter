@@ -24,6 +24,9 @@ use amethyst::core::transform::Transform;
 use amethyst::core::math::Vector3;
 use rand::{Rng, /*ThreadRng,*/ thread_rng};
 use rand::ThreadRng;
+use amethyst::assets::Handle;
+use amethyst::renderer::SpriteSheet;
+use amethyst::renderer::SpriteRender;
 
 use super::png_mesh_and_material;
 use crate::config::GAME_CONFIGURATION;
@@ -41,8 +44,8 @@ use crate::components::Asteroid;
 ///
 /// The asteroid entities are returned as a vector, in case
 /// we want to use them somewhere else.
-pub fn initialise_asteroids(world: &mut World) -> Vec<Entity> {
-    let (mesh, background) = png_mesh_and_material("PNG/Meteors/meteorBrown_med1.png", [43.0,43.0], world);
+pub fn initialise_asteroids(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) -> Vec<Entity> {
+    //let (mesh, background) = png_mesh_and_material("PNG/Meteors/meteorBrown_med1.png", [43.0,43.0], world);
     let asteroid = Asteroid {
         velocity: GAME_CONFIGURATION.asteroid_velocity,
         width: 43.0,
@@ -62,11 +65,15 @@ pub fn initialise_asteroids(world: &mut World) -> Vec<Entity> {
 
         world
         .create_entity()
-        .with(mesh.clone())
-        .with(background.clone())
+//        .with(mesh.clone())
+//        .with(background.clone())
         .with(asteroid.clone())
         .with(local_transform)
         /*.with(GlobalTransform::default())*/
+            .with(SpriteRender {
+                sprite_sheet: sprite_sheet_handle.clone(),
+                sprite_number: 2
+            })
         .build()
     }).collect()
 }

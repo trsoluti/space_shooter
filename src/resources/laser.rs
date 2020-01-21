@@ -1,7 +1,8 @@
 
-use amethyst::renderer::{Material, Mesh};
+//use amethyst::renderer::{Material, Mesh};
 use amethyst::assets::Handle;
 use crate::components::Laser as LaserComponent;
+use amethyst::renderer::SpriteRender;
 
 /// The resource containing data we need to create a laser entity.
 ///
@@ -12,10 +13,12 @@ use crate::components::Laser as LaserComponent;
 /// to create new entities.
 #[derive(Clone)]
 pub struct LaserResource {
-    /// The mesh used to create a laser entity
-    pub mesh: Handle<Mesh>,
-    /// The material used to create a laser entity
-    pub material: Handle<Material>,
+//    /// The mesh used to create a laser entity
+//    pub mesh: Handle<Mesh>,
+//    /// The material used to create a laser entity
+//    pub material: Handle<Material>,
     /// The component used to create a laser entity
     pub component: LaserComponent,
+    /// The render that locates the sprite in a sprite sheet resource
+    pub sprite_render: SpriteRender
 }

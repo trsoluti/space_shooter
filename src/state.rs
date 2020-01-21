@@ -16,6 +16,7 @@ use crate::resources::{PlayState};
 /// 2. Handling the Escape key to stop the game
 /// 3. Monitoring a resource to determine the end of a game
 /// (and passing information from the system to the game state through a resource).
+#[derive(Default)]
 pub struct GameState;
 
 
