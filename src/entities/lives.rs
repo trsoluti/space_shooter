@@ -1,15 +1,16 @@
 //! Manage the life entities
 
+use amethyst::assets::Handle;
+use amethyst::ecs::prelude::{Entity, World, WorldExt};
 use amethyst::prelude::Builder;
-use amethyst::ecs::prelude::{Entity, World};
-use amethyst::renderer::{PngFormat, Texture, TextureMetadata};
-use amethyst::ui::{UiImage, UiTransform, Anchor};
-use amethyst::assets::{AssetStorage, Loader};
+use amethyst::renderer::SpriteRender;
+use amethyst::renderer::SpriteSheet;
+use amethyst::ui::{Anchor, UiImage, UiTransform};
 
 use crate::components::Life;
 
-const LIFE_WIDTH:f32 = 32.;
-const LIFE_HEIGHT:f32 = 26.;
+const LIFE_WIDTH: f32 = 32.;
+const LIFE_HEIGHT: f32 = 26.;
 
 /// Initialises the three life entities
 ///
@@ -22,17 +23,13 @@ const LIFE_HEIGHT:f32 = 26.;
 ///
 /// Note as well that the co-ordination system for the UI layer is different. (0,0) is top-left instead of bottom-left,
 /// and the png sprites don't need to be scaled.
-pub fn initialise_lives(world: &mut World) -> Vec<Entity> {
-    let logo = {
-        let loader = world.read_resource::<Loader>();
-        let life_texture = loader.load(
-            "PNG/UI/playerLife1_blue.png",
-            PngFormat,
-            TextureMetadata::srgb_scale(),
-            (),
-            &world.read_resource::<AssetStorage<Texture>>(),
-        );
-        life_texture
+pub fn initialise_lives(
+    world: &mut World,
+    sprite_sheet_handle: Handle<SpriteSheet>,
+) -> Vec<Entity> {
+    let sprite_render = SpriteRender {
+        sprite_sheet: sprite_sheet_handle,
+        sprite_number: 3,
     };
 
     let mut entity_list = Vec::<Entity>::new();
@@ -41,21 +38,18 @@ pub fn initialise_lives(world: &mut World) -> Vec<Entity> {
             world
                 .create_entity()
                 .with(UiTransform::new(
-                    format!("life{}",i),
+                    format!("life{}", i),
                     Anchor::TopLeft,
+                    Anchor::Middle,
                     f32::from(i) * LIFE_WIDTH,
                     -LIFE_HEIGHT,
                     0.,
                     LIFE_WIDTH,
                     LIFE_HEIGHT,
-                    0,
                 ))
-                .with(UiImage {
-                    texture: logo.clone(),
-                })
-                //.with(logo.clone())
-                .with(Life{life_number:i})
-                .build()
+                .with(UiImage::Sprite(sprite_render.clone()))
+                .with(Life { life_number: i })
+                .build(),
         );
     }
     entity_list

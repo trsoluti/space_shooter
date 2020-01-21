@@ -1,13 +1,14 @@
 use crate::components::Ship;
-use crate::resources::LaserResource;
-use crate::entities::fire_laser;
 use crate::config::GAME_CONFIGURATION;
+use crate::entities::fire_laser;
+use crate::resources::LaserResource;
 
-use amethyst::core::nalgebra::Vector3;
+use amethyst::core::math::Vector3;
 use amethyst::core::timing::Time;
 use amethyst::core::transform::Transform;
-use amethyst::ecs::prelude::{ReadExpect, Join, System, WriteStorage, Entities, LazyUpdate};
+use amethyst::ecs::prelude::{Entities, Join, LazyUpdate, ReadExpect, System, WriteStorage};
 use amethyst::input::InputHandler;
+use amethyst::input::StringBindings;
 
 /// Moves the ship and fires lasers based on user-provided input.
 ///
@@ -46,7 +47,7 @@ impl<'s> System<'s> for ShipSystem {
         WriteStorage<'s, Ship>,
         WriteStorage<'s, Transform>,
         ReadExpect<'s, Time>,
-        ReadExpect<'s, InputHandler<String, String>>,
+        ReadExpect<'s, InputHandler<StringBindings>>,
         ReadExpect<'s, LaserResource>,
         ReadExpect<'s, LazyUpdate>,
     );
@@ -70,7 +71,10 @@ impl<'s> System<'s> for ShipSystem {
     /// apply the appropriate thrust to the ship's velocity.
     ///
     /// Finally, we move the ship and bounce it off the bounds if we have hit them.
-    fn run(&mut self, (entities, mut ships, mut transforms, time, input, laser_resource, lazy_update): Self::SystemData) {
+    fn run(
+        &mut self,
+        (entities, mut ships, mut transforms, time, input, laser_resource, lazy_update): Self::SystemData,
+    ) {
         for (ship, transform) in (&mut ships, &mut transforms).join() {
             // count down on the amount of time before we can fire again.
             if ship.trigger_reset_timer > 0.0 {
@@ -86,8 +90,8 @@ impl<'s> System<'s> for ShipSystem {
                 if action && ship.trigger_reset_timer <= 0.0 {
                     // fire from the middle top of the ship.
                     let fire_position = Vector3::new(
-                        transform.translation()[0] + ship.width / 2.0,
-                        transform.translation()[1] + ship.height,
+                        transform.translation()[0],
+                        transform.translation()[1] + (ship.height / 2.),
                         0.0,
                     );
                     fire_laser(&entities, &laser_resource, fire_position, &lazy_update);
@@ -99,23 +103,25 @@ impl<'s> System<'s> for ShipSystem {
 
             // if joystick is off centre,
             if let Some(movement) = optional_movement {
-                ship.velocity += movement as f32 * time.delta_seconds() * GAME_CONFIGURATION.ship_thrust;
+                ship.velocity +=
+                    movement as f32 * time.delta_seconds() * GAME_CONFIGURATION.ship_thrust;
             }
 
             // move the ship according to its velocity
-            transform.translate_x(-ship.velocity * time.delta_seconds());
+            transform.prepend_translation_x(-ship.velocity * time.delta_seconds());
 
             // make sure the ship stays on the screen
             let arena_width = 1024.;
-            let max_position = arena_width - (ship.width/2.0);
-            if transform.translation()[0] <= (-ship.width/2.0) {
-                transform.set_x(-ship.width/2.0);
+            let arena_left = 0.;
+            let max_position = arena_width;
+            if transform.translation()[0] < arena_left
+            {
+                transform.set_translation_x(arena_left);
                 ship.velocity = -ship.velocity; // bounce off the left wall
             } else if transform.translation()[0] >= max_position {
-                transform.set_x(max_position);
+                transform.set_translation_x(max_position);
                 ship.velocity = -ship.velocity; // bounce off right wall
             }
         }
     }
 }
-

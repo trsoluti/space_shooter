@@ -1,9 +1,8 @@
-
 use amethyst::core::transform::Transform;
-use amethyst::ecs::prelude::{Join, System, ReadStorage, WriteStorage, Write};
+use amethyst::ecs::prelude::{Join, ReadStorage, System, Write, WriteStorage};
 
-use crate::components::Ship;
 use crate::components::Asteroid;
+use crate::components::Ship;
 use crate::resources::PlayState;
 
 /// Reduces the number of lives
@@ -64,7 +63,8 @@ impl<'s> System<'s> for ShipCollisionSystem {
                 // if the two collision boxes overlap,
                 if ((ship_left <= asteroid_right && ship_left >= asteroid_left)
                     || (ship_right <= asteroid_left && ship_right >= asteroid_right))
-                    && (ship_top >= asteroid_bottom) {
+                    && (ship_top >= asteroid_bottom)
+                {
                     // we have a collision. Decrement the number of lives of the game
                     if play_state.lives > 0 {
                         play_state.lives -= 1;

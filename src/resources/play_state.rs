@@ -1,4 +1,3 @@
-
 /// The play state of our game
 ///
 /// This resource stores the number of lives the player has currently.

@@ -1,5 +1,4 @@
-
-use amethyst::ecs::prelude::{Read, Join, System, ReadStorage, Entities};
+use amethyst::ecs::prelude::{Entities, Join, Read, ReadStorage, System};
 
 use crate::components::Life;
 use crate::resources::PlayState;
@@ -21,11 +20,7 @@ impl<'s> System<'s> for LivesSystem {
     ///                    so we can check their life number
     /// * **PlayState**: read access to the play state
     ///                    so we can read the current number of lives
-    type SystemData = (
-        Entities<'s>,
-        ReadStorage<'s, Life>,
-        Read<'s, PlayState>,
-    );
+    type SystemData = (Entities<'s>, ReadStorage<'s, Life>, Read<'s, PlayState>);
 
     /// Runs a pass of the system on our selected components
     ///
@@ -44,5 +39,4 @@ impl<'s> System<'s> for LivesSystem {
             }
         }
     }
-
 }

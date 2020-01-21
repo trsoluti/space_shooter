@@ -1,9 +1,8 @@
-
 use amethyst::core::transform::Transform;
-use amethyst::ecs::prelude::{Entities, Join, System, ReadStorage, WriteStorage};
+use amethyst::ecs::prelude::{Entities, Join, ReadStorage, System, WriteStorage};
 
-use crate::components::Laser;
 use crate::components::Asteroid;
+use crate::components::Laser;
 
 /// Removes the laser and repositions the asteroid
 /// if it detects a collision between them
@@ -38,23 +37,28 @@ impl<'s> System<'s> for LaserCollisionSystem {
     /// If they have, the function deletes the laser and marks the asteroid for repositioning.
     fn run(&mut self, (entities, lasers, transforms, mut asteroids): Self::SystemData) {
         // For each laser,
-        for (laser_entity, laser_component, laser_transform) in (&*entities, &lasers, &transforms).join() {
+        for (laser_entity, laser_component, laser_transform) in
+            (&*entities, &lasers, &transforms).join()
+        {
             // Set up the collision box for our laser:
-            let laser_left = laser_transform.translation()[0];
+            let laser_left = laser_transform.translation()[0] - (laser_component.width / 2.);
             let laser_right = laser_left + laser_component.width;
-            let laser_top = laser_transform.translation()[1] + laser_component.height;
+            let laser_top = laser_transform.translation()[1] + (laser_component.height / 2.);
 
             // scan our asteroids to see if we have hit any one of them
             for (asteroid_component, asteroid_transform) in (&mut asteroids, &transforms).join() {
                 // Set up a collision box for our asteroid
-                let asteroid_left = asteroid_transform.translation()[0];
-                let asteroid_bottom = asteroid_transform.translation()[1];
+                let asteroid_left =
+                    asteroid_transform.translation()[0] - (asteroid_component.width / 2.);
+                let asteroid_bottom =
+                    asteroid_transform.translation()[1] - (asteroid_component.height / 2.);
                 let asteroid_right = asteroid_left + asteroid_component.width;
 
                 // If the two items overlap,
                 if ((laser_left <= asteroid_right && laser_left >= asteroid_left)
                     || (laser_right <= asteroid_left && laser_right >= asteroid_right))
-                    && (laser_top >= asteroid_bottom) {
+                    && (laser_top >= asteroid_bottom)
+                {
                     // we have a collision. Delete the laser
                     let _result = entities.delete(laser_entity);
                     // let the asteroid system know the asteroid is ready for respawn/relocation
