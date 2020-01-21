@@ -8,7 +8,7 @@ use amethyst::ecs::prelude::{Component, DenseVecStorage};
 /// the system will remove the associated life entity.
 pub struct Life {
     /// The life number this component represents
-    pub life_number: u8
+    pub life_number: u8,
 }
 
 impl Component for Life {

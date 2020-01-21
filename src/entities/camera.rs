@@ -1,10 +1,8 @@
 //! Manage the camera entity
-use amethyst::prelude::Builder;
-use amethyst::ecs::prelude::{Entity, World, WorldExt};
 use amethyst::core::transform::Transform;
+use amethyst::ecs::prelude::{Entity, World, WorldExt};
+use amethyst::prelude::Builder;
 use amethyst::renderer::camera::{Camera, Projection};
-
-
 
 /// Initialises a camera and adds it to the world.
 ///
@@ -18,13 +16,8 @@ pub fn initialise_camera(world: &mut World) -> Entity {
     transform.set_translation_z(1.0);
     world
         .create_entity()
-        .with(Camera::from( Projection::orthographic(
-            0.0,
-            1024.,
-            0.0,
-            1024.,
-            0.1,
-            2000.0,
+        .with(Camera::from(Projection::orthographic(
+            0.0, 1024., 0.0, 1024., 0.1, 2000.0,
         )))
         .with(transform)
         .build()

@@ -16,16 +16,16 @@
 //! A system takes a set of common elements, such as components, entities and resources,
 //! and performs some action with them.
 
-mod ship;
-mod ship_collision;
+mod asteroid;
 mod laser;
 mod laser_collision;
-mod asteroid;
 mod lives;
+mod ship;
+mod ship_collision;
 
-pub use self::ship::ShipSystem;
-pub use self::ship_collision::ShipCollisionSystem;
+pub use self::asteroid::AsteroidSystem;
 pub use self::laser::LaserSystem;
 pub use self::laser_collision::LaserCollisionSystem;
-pub use self::asteroid::AsteroidSystem;
 pub use self::lives::LivesSystem;
+pub use self::ship::ShipSystem;
+pub use self::ship_collision::ShipCollisionSystem;

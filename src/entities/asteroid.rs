@@ -18,19 +18,18 @@
 //! (destroyed) entities and re-uses the slots when you create new ones,
 //! so both methods have the same underlying implementation.)
 
-use amethyst::prelude::Builder;
-use amethyst::ecs::prelude::{Entity, World, WorldExt};
-use amethyst::core::transform::Transform;
-use amethyst::core::math::Vector3;
-use rand::{Rng, /*ThreadRng,*/ thread_rng};
-use rand::ThreadRng;
 use amethyst::assets::Handle;
-use amethyst::renderer::SpriteSheet;
+use amethyst::core::math::Vector3;
+use amethyst::core::transform::Transform;
+use amethyst::ecs::prelude::{Entity, World, WorldExt};
+use amethyst::prelude::Builder;
 use amethyst::renderer::SpriteRender;
+use amethyst::renderer::SpriteSheet;
+use rand::ThreadRng;
+use rand::{thread_rng, Rng};
 
-use super::png_mesh_and_material;
-use crate::config::GAME_CONFIGURATION;
 use crate::components::Asteroid;
+use crate::config::GAME_CONFIGURATION;
 
 /// Initialises a hundred asteroid objects somewhere above the arena.
 ///
@@ -44,7 +43,10 @@ use crate::components::Asteroid;
 ///
 /// The asteroid entities are returned as a vector, in case
 /// we want to use them somewhere else.
-pub fn initialise_asteroids(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) -> Vec<Entity> {
+pub fn initialise_asteroids(
+    world: &mut World,
+    sprite_sheet_handle: Handle<SpriteSheet>,
+) -> Vec<Entity> {
     //let (mesh, background) = png_mesh_and_material("PNG/Meteors/meteorBrown_med1.png", [43.0,43.0], world);
     let asteroid = Asteroid {
         velocity: GAME_CONFIGURATION.asteroid_velocity,
@@ -52,30 +54,30 @@ pub fn initialise_asteroids(world: &mut World, sprite_sheet_handle: Handle<Sprit
         height: 43.0,
         is_destroyed: false,
     };
-    let (screen_width, screen_height) = {
-        (1024.,1024.)
-    };
+    let (screen_width, screen_height) = { (1024., 1024.) };
 
     let mut rng = thread_rng();
 
     let numbers = 0..;
     let range = numbers.take(100);
-    range.map(|_number| {
-        let local_transform = locate_asteroid(&asteroid, screen_width, screen_height, &mut rng);
+    range
+        .map(|_number| {
+            let local_transform = locate_asteroid(&asteroid, screen_width, screen_height, &mut rng);
 
-        world
-        .create_entity()
-//        .with(mesh.clone())
-//        .with(background.clone())
-        .with(asteroid.clone())
-        .with(local_transform)
-        /*.with(GlobalTransform::default())*/
-            .with(SpriteRender {
-                sprite_sheet: sprite_sheet_handle.clone(),
-                sprite_number: 2
-            })
-        .build()
-    }).collect()
+            world
+                .create_entity()
+                //        .with(mesh.clone())
+                //        .with(background.clone())
+                .with(asteroid.clone())
+                .with(local_transform)
+                /*.with(GlobalTransform::default())*/
+                .with(SpriteRender {
+                    sprite_sheet: sprite_sheet_handle.clone(),
+                    sprite_number: 2,
+                })
+                .build()
+        })
+        .collect()
 }
 
 /// (Re)locate the asteroid to a random spot somewhere above the screen.
@@ -86,12 +88,20 @@ pub fn initialise_asteroids(world: &mut World, sprite_sheet_handle: Handle<Sprit
 ///
 /// As well, the height of the field is the same as the screen size,
 /// so the asteroids will fall at continuously regular intervals.
-pub fn locate_asteroid(asteroid: &Asteroid, screen_width: f32, screen_height: f32, random_number_generator: &mut ThreadRng)->Transform {
+pub fn locate_asteroid(
+    asteroid: &Asteroid,
+    screen_width: f32,
+    screen_height: f32,
+    random_number_generator: &mut ThreadRng,
+) -> Transform {
     let max_width = screen_width - asteroid.width;
-    let min_height = screen_height + GAME_CONFIGURATION.wait_for_first_asteroid * GAME_CONFIGURATION.asteroid_velocity;
-    let max_height = min_height +  (screen_height * GAME_CONFIGURATION.asteroid_velocity) / GAME_CONFIGURATION.asteroid_density;
-    let pos_x = random_number_generator.gen::<f32>()*max_width;
-    let pos_y = min_height + random_number_generator.gen::<f32>()*(max_height-min_height);
+    let min_height = screen_height
+        + GAME_CONFIGURATION.wait_for_first_asteroid * GAME_CONFIGURATION.asteroid_velocity;
+    let max_height = min_height
+        + (screen_height * GAME_CONFIGURATION.asteroid_velocity)
+            / GAME_CONFIGURATION.asteroid_density;
+    let pos_x = random_number_generator.gen::<f32>() * max_width;
+    let pos_y = min_height + random_number_generator.gen::<f32>() * (max_height - min_height);
 
     let mut local_transform = Transform::default();
     local_transform.set_translation(Vector3::new(pos_x, pos_y, 0.0));

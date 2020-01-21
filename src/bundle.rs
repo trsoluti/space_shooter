@@ -1,13 +1,10 @@
-
-
-use amethyst::core::bundle::{SystemBundle};
+use amethyst::core::bundle::SystemBundle;
+use amethyst::ecs::prelude::DispatcherBuilder;
 use amethyst::Result;
-use amethyst::ecs::prelude::{DispatcherBuilder};
 
 //use components::*;
 use crate::systems::*;
 use amethyst::prelude::World;
-//use resources::{PlayState};
 
 /// A bundle is a convenient way to initialise related resources, components and systems in a
 /// world.
@@ -24,7 +21,11 @@ impl<'a, 'b> SystemBundle<'a, 'b> for GameBundle {
         builder.add(ShipCollisionSystem, "collision_system", &["ship_system"]);
         builder.add(AsteroidSystem, "asteroid_system", &["collision_system"]);
         builder.add(LaserSystem, "laser_system", &["ship_system"]);
-        builder.add(LaserCollisionSystem, "laser_collision_system", &["laser_system"]);
+        builder.add(
+            LaserCollisionSystem,
+            "laser_collision_system",
+            &["laser_system"],
+        );
         builder.add(LivesSystem, "lives_system", &["collision_system"]);
         Ok(())
     }

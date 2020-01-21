@@ -56,55 +56,31 @@
 
 #![deny(missing_docs)]
 
-//extern crate amethyst;
-//extern crate serde;
-//#[macro_use]
-//extern crate serde_derive;
-//#[macro_use]
-//extern crate lazy_static;
-//extern crate rand;
-// These next two crates are needed only for the arguments to with_transparency()
-// eventually this will be blended into Amethyst somehow.
-//extern crate gfx;
-//extern crate gfx_core;
-
-mod config;
-mod state;
 mod bundle;
-mod render_graph;
 pub mod components;
+mod config;
 pub mod entities;
-pub mod systems;
 pub mod resources;
+mod state;
+pub mod systems;
 
 // public use so these things get documented
+pub use crate::bundle::GameBundle;
 pub use crate::config::GameConfiguration;
 pub use crate::config::GAME_CONFIGURATION;
 pub use crate::state::GameState;
-pub use crate::bundle::GameBundle;
-//pub use crate::render_graph::RenderGraph;
 
-use amethyst::prelude::*;
-use amethyst::utils::application_root_dir;
 use amethyst::core::transform::TransformBundle;
-use amethyst::ui::UiBundle;
-use amethyst::ui::RenderUi;
 use amethyst::input::InputBundle;
 use amethyst::input::StringBindings;
-//use amethyst::window::DisplayConfig;
-//use amethyst::window::WindowBundle;
-use amethyst::renderer::RenderingBundle;
-use amethyst::renderer::types::DefaultBackend;
-use amethyst::renderer::plugins::RenderToWindow;
+use amethyst::prelude::*;
 use amethyst::renderer::plugins::RenderFlat2D;
-/*
-// These next two values are needed only for the arguments to with_transparency()
-// eventually this will be blended into Amethyst somehow.
-use gfx_core::state::{ColorMask};
-use gfx::preset::blend::ALPHA;
-*/
-
-
+use amethyst::renderer::plugins::RenderToWindow;
+use amethyst::renderer::types::DefaultBackend;
+use amethyst::renderer::RenderingBundle;
+use amethyst::ui::RenderUi;
+use amethyst::ui::UiBundle;
+use amethyst::utils::application_root_dir;
 
 const BACKGROUND_COLOUR: [f32; 4] = [0.25, 0.25, 0.25, 0.0]; // dark grey
 
@@ -121,89 +97,38 @@ const BACKGROUND_COLOUR: [f32; 4] = [0.25, 0.25, 0.25, 0.0]; // dark grey
 pub fn run() -> Result<(), amethyst::Error> {
     let _ = &config::GAME_CONFIGURATION; // initialises game constants
 
-    // For Amethyst 0.11+ when it comes out:
     let application_root = application_root_dir()?;
 
     // Set the display configuration path to <package root>/resources/display_config.ron.
-    let display_config_path =  application_root.join("resources/display_config.ron");
-    //let display_config = DisplayConfig::load(&display_config_path);
+    let display_config_path = application_root.join("resources/display_config.ron");
 
     // Load up the key bindings path and the resources path
     let key_bindings_path = application_root.join("resources/input.ron");
 
     let resources_path = application_root.join("assets");
 
-    // For Amethyst 0.10:
-    //-let application_root = application_root_dir();
-
-    // Set the display configuration path to <package root>/resources/display_config.ron.
-    //-let display_config_path =  format!("{}/resources/display_config.ron", application_root);
-    //-let display_config = DisplayConfig::load(&display_config_path);
-
-    // Load up the key bindings path and the resources path
-    //-let key_bindings_path = format!("{}/resources/input.ron", application_root);
-
-    //-let resources_path = format!("{}/assets", application_root);
-
-    /*
-    // Create a pipeline that has three passes:
-    // 1. setting the background to the background colour constant
-    // 2. drawing the background image and the sprites
-    // 3. drawing the UI components (lives)
-    let pipe = {
-        Pipeline::build()
-            .with_stage(
-                Stage::with_backbuffer()
-                    .clear_target(BACKGROUND_COLOUR, 1.0)
-                    .with_pass(DrawFlat::<PosTex, f32>::new().with_transparency_settings(ColorMask::all(), ALPHA, None))
-                    .with_pass(DrawUi::new())
-            )
-
-    };
-    */
-
     // Create a game data with all our systems bundled into it
     let game_data = GameDataBuilder::default()
-        /*.with_bundle(WindowBundle::from_config_path(display_config_path))?*/
         .with_bundle(
-            InputBundle::<StringBindings>::new()
-                .with_bindings_from_file(
-                    key_bindings_path
-            )?,
+            InputBundle::<StringBindings>::new().with_bindings_from_file(key_bindings_path)?,
         )?
         .with_bundle(GameBundle)?
         .with_bundle(TransformBundle::new())?
         .with_bundle(UiBundle::<StringBindings>::new())?
-        /*.with_thread_local(RenderingSystem::<DefaultBackend, _>::new(
-            RenderGraph::default(),
-        )*/
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
                 .with_plugin(
                     RenderToWindow::from_config_path(display_config_path)?
-                        .with_clear(BACKGROUND_COLOUR)
+                        .with_clear(BACKGROUND_COLOUR),
                 )
-                .with_plugin(
-                    RenderFlat2D::default()
-                )
-                .with_plugin(
-                    RenderUi::default()
-                )
+                .with_plugin(RenderFlat2D::default())
+                .with_plugin(RenderUi::default()),
         )?;
 
     // Create a game with out game data and our GameState.
-    let mut game = Application::new(
-        resources_path,
-        GameState,
-        game_data)?;
+    let mut game = Application::new(resources_path, GameState, game_data)?;
 
-    // The way Pong does it (perhaps because want to add frame rate)
-//    let mut game = Application::build(resources_path, GameState::default())?
-//        .build(game_data)?;
-
-    Ok(
-        game.run(),
-    )
+    Ok(game.run())
 }
 
 /// Main method

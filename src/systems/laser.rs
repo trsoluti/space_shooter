@@ -1,7 +1,6 @@
-
-use amethyst::core::transform::Transform;
-use amethyst::ecs::prelude::{Entities, Join, System, ReadStorage, WriteStorage, Read};
 use amethyst::core::timing::Time;
+use amethyst::core::transform::Transform;
+use amethyst::ecs::prelude::{Entities, Join, Read, ReadStorage, System, WriteStorage};
 //use amethyst::core::Float;
 
 use crate::components::Laser;
@@ -50,11 +49,14 @@ impl<'s> System<'s> for LaserSystem {
     /// (The deletion will happen after all the systems have run and the Amethyst engine does a `world.maintain()`.)
     fn run(&mut self, (entities, lasers, mut transforms, time): Self::SystemData) {
         // Scan through the list of lasers and move them forward.
-        for (laser_entity, _laser_component, laser_transform) in (&*entities, &lasers, &mut transforms).join() {
-            laser_transform.prepend_translation_y(GAME_CONFIGURATION.laser_velocity * time.delta_seconds());
-
+        for (laser_entity, _laser_component, laser_transform) in
+            (&*entities, &lasers, &mut transforms).join()
+        {
+            laser_transform
+                .prepend_translation_y(GAME_CONFIGURATION.laser_velocity * time.delta_seconds());
+            //+println!("laser at ({},{})", laser_transform.translation()[0], laser_transform.translation()[1]);
             // Delete the laser if it has gone off the screen
-            if laser_transform.translation()[1] > /*Float::from*/(1024.) {
+            if laser_transform.translation()[1] > 0. {
                 let _result = entities.delete(laser_entity);
             }
         }

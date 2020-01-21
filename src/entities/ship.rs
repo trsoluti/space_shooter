@@ -1,25 +1,17 @@
 //! Manage the ship entity
 
-use amethyst::prelude::Builder;
-use amethyst::ecs::prelude::{Entity, World, WorldExt};
 use amethyst::core::math::Vector3;
 use amethyst::core::transform::Transform;
+use amethyst::ecs::prelude::{Entity, World, WorldExt};
+use amethyst::prelude::Builder;
 use amethyst::renderer::SpriteRender;
 
 use amethyst::assets::Handle;
-use amethyst::assets::Loader;
-use amethyst::assets::AssetStorage;
-use amethyst::renderer::ImageFormat;
 use amethyst::renderer::SpriteSheet;
-use amethyst::renderer::Texture;
-use amethyst::renderer::SpriteSheetFormat;
-
-use super::png_mesh_and_material;
 
 // The width and the height come from the png file
-const SHIP_WIDTH:f32 = 105.0;
-const SHIP_HEIGHT:f32 = 83.0;
-
+const SHIP_WIDTH: f32 = 105.0;
+const SHIP_HEIGHT: f32 = 83.0;
 
 use crate::components::Ship;
 
@@ -30,9 +22,6 @@ use crate::components::Ship;
 /// at the bottom (y=0) centre of the screen,
 /// then finally bundles all the components into an entity.
 pub fn initialise_ship(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) -> Entity {
-//    let (mesh, material) = png_mesh_and_material(
-//        "PNG/playerShip4_purple.png",
-//        [SHIP_WIDTH, SHIP_HEIGHT], world);
     let width = {
         /*
         let dim = world.read_resource::<ScreenDimensions>();
@@ -43,23 +32,26 @@ pub fn initialise_ship(world: &mut World, sprite_sheet_handle: Handle<SpriteShee
 
     // Set the scale and position of our ship sprite:
     let mut local_transform = Transform::default();
-    local_transform.set_translation(Vector3::new(width/2.0 - SHIP_WIDTH/2.0, SHIP_HEIGHT/2.0 - 1024.0, 0.0));
+    local_transform.set_translation(Vector3::new(
+        width / 2.0 - SHIP_WIDTH / 2.0,
+        SHIP_HEIGHT / 2.0 - 1024.0,
+        0.0,
+    ));
 
     // Create a new entity by bundling the mesh, material, component and transforms together
     // then return the entity we created.
     world
         .create_entity()
-        //.with(mesh)
-        //.with(material)
         .with(Ship {
             velocity: 0.0, // ship starts out stationary
             width: SHIP_WIDTH.into(),
             height: SHIP_HEIGHT.into(),
-            trigger_reset_timer: 0.0})
+            trigger_reset_timer: 0.0,
+        })
         .with(local_transform)
-        .with(SpriteRender{
+        .with(SpriteRender {
             sprite_sheet: sprite_sheet_handle.clone(),
-            sprite_number: 0
+            sprite_number: 0,
         })
         .build()
 }

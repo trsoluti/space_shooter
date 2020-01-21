@@ -1,8 +1,8 @@
 //! The set of items used by the Game Designer to tune the game after the coding is complete (e.g. player speed)
 
 use amethyst::config::Config;
-use serde_derive::{Serialize, Deserialize};
 use lazy_static::lazy_static;
+use serde_derive::{Deserialize, Serialize};
 
 /// "Constants" that control the game mechanics
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]

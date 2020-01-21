@@ -36,7 +36,14 @@ List((
             y: 447,
             width: 43,
             height: 43,
-        )
+        ),
+        (
+            // 3: <SubTexture name="playerLife1_blue.png" x="482" y="358" width="33" height="26"/>
+            x: 482,
+            y: 358,
+            width: 33,
+            height: 26,
+        ),
         // etc...
     ],
 ))
