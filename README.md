@@ -23,9 +23,6 @@ or
 cargo build --features "vulkan"
 ```
 
-Note. This version does not run well on Mac OS. This is due to a problem with the backend
-Metal driver. 
-
 The assets are supplied from by Kenney Vleugels (www.kenney.nl) under [Creative Commons Licence CC0](http://creativecommons.org/publicdomain/zero/1.0/).
 
 Code is supplied under Apache License 2.0 and the MIT License. See the appropriate license files for more information.
