@@ -5,6 +5,8 @@ use amethyst::ecs::prelude::{Entities, Join, Read, ReadStorage, System, WriteSto
 
 use crate::components::Laser;
 use crate::config::GAME_CONFIGURATION;
+use amethyst::window::ScreenDimensions;
+use amethyst::core::ecs::ReadExpect;
 
 /// Moves the laser and deletes it if it goes off the screen
 ///
@@ -24,11 +26,15 @@ impl<'s> System<'s> for LaserSystem {
     ///                            so we can update the laser positions
     /// * **Time**:              read access to the time resource so we can know how much time
     ///                            has elapsed since we last ran this system
+    /// * **ScreenDimensions**:  read access to the screen dimensions so we figure out if
+    ///                            we've gone off the screen. Note that this is `ReadExpect`
+    ///                            rather than `Read`, as there's no default value
     type SystemData = (
         Entities<'s>,
         ReadStorage<'s, Laser>,
         WriteStorage<'s, Transform>,
         Read<'s, Time>,
+        ReadExpect<'s, ScreenDimensions>,
     );
 
     /// Runs a pass of the system on our selected components
@@ -47,7 +53,7 @@ impl<'s> System<'s> for LaserSystem {
     /// The function then checks the laser's position against the screen top. If the laser has gone off the screen,
     /// it asks the entity list to queue a request to delete the selected laser entity.
     /// (The deletion will happen after all the systems have run and the Amethyst engine does a `world.maintain()`.)
-    fn run(&mut self, (entities, lasers, mut transforms, time): Self::SystemData) {
+    fn run(&mut self, (entities, lasers, mut transforms, time, screen_dimensions): Self::SystemData) {
         // Scan through the list of lasers and move them forward.
         for (laser_entity, _laser_component, laser_transform) in
             (&*entities, &lasers, &mut transforms).join()
@@ -56,7 +62,7 @@ impl<'s> System<'s> for LaserSystem {
                 .prepend_translation_y(GAME_CONFIGURATION.laser_velocity * time.delta_seconds());
             //+println!("laser at ({},{})", laser_transform.translation()[0], laser_transform.translation()[1]);
             // Delete the laser if it has gone off the screen
-            if laser_transform.translation()[1] > 0. {
+            if laser_transform.translation()[1] > screen_dimensions.height() {
                 let _result = entities.delete(laser_entity);
             }
         }

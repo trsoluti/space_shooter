@@ -13,6 +13,7 @@ use amethyst::renderer::Sprite;
 use amethyst::renderer::SpriteRender;
 use amethyst::renderer::SpriteSheet;
 use amethyst::renderer::Texture;
+use amethyst::window::ScreenDimensions;
 
 /// Initialises the background as a sprite object
 ///
@@ -20,14 +21,21 @@ use amethyst::renderer::Texture;
 /// which stores a list of sprites.
 pub fn initialise_background(world: &mut World) -> Entity {
     let sprite_sheet_handle = load_background_sprite_sheet_handle(world);
+    let screen_dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
 
     let sprite_render = SpriteRender {
         sprite_sheet: sprite_sheet_handle,
         sprite_number: 0,
     };
 
+    // Position the centre of the background sprite to be
+    // the centre of the screen.
     let mut local_transform = Transform::default();
-    local_transform.set_translation(Vector3::new(512., -512., 0.));
+    local_transform.set_translation( Vector3::new(
+        screen_dimensions.height() / 2.,
+        screen_dimensions.width() / 2.,
+        0.
+    ));
 
     world
         .create_entity()

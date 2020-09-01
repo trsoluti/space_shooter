@@ -25,11 +25,11 @@ use amethyst::ecs::prelude::{Entity, World, WorldExt};
 use amethyst::prelude::Builder;
 use amethyst::renderer::SpriteRender;
 use amethyst::renderer::SpriteSheet;
-use rand::rngs::ThreadRng;
-use rand::{thread_rng, Rng};
+use rand::{thread_rng, Rng, ThreadRng};
 
 use crate::components::Asteroid;
 use crate::config::GAME_CONFIGURATION;
+use amethyst::window::ScreenDimensions;
 
 /// Initialises a hundred asteroid objects somewhere above the arena.
 ///
@@ -54,7 +54,10 @@ pub fn initialise_asteroids(
         height: 43.0,
         is_destroyed: false,
     };
-    let (screen_width, screen_height) = { (1024., 1024.) };
+    let (screen_width, screen_height) = {
+        let screen_dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
+        (screen_dimensions.width(), screen_dimensions.height())
+    };
 
     let mut rng = thread_rng();
 

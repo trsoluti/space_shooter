@@ -3,11 +3,11 @@
 use amethyst::core::math::Vector3;
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Entity, World, WorldExt};
-use amethyst::prelude::Builder;
-use amethyst::renderer::SpriteRender;
-
 use amethyst::assets::Handle;
-use amethyst::renderer::SpriteSheet;
+use amethyst::prelude::Builder;
+use amethyst::renderer::{SpriteSheet, SpriteRender};
+use amethyst::window::ScreenDimensions;
+
 
 // The width and the height come from the png file
 const SHIP_WIDTH: f32 = 105.0;
@@ -22,20 +22,23 @@ use crate::components::Ship;
 /// at the bottom (y=0) centre of the screen,
 /// then finally bundles all the components into an entity.
 pub fn initialise_ship(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) -> Entity {
-    let width = {
-        /*
-        let dim = world.read_resource::<ScreenDimensions>();
-        dim.width()
-        */
-        1024.
-    };
+    let _screen_dimensions = (*world.read_resource::<ScreenDimensions>()).clone();
 
-    // Set the scale and position of our ship sprite:
+    // Set the scale and position of our ship sprite
+    // so that it's just above the centre bottom of the screen
     let mut local_transform = Transform::default();
     local_transform.set_translation(Vector3::new(
-        width / 2.0 - SHIP_WIDTH / 2.0,
-        SHIP_HEIGHT / 2.0 - 1024.0,
-        0.0,
+        _screen_dimensions.width() / 2.,
+        SHIP_HEIGHT / 2. + 0.1, // add a bit so it's not touching the bottom of the screen
+        0.
+    ));
+
+    // We also scale the sprite negatively so that we
+    // flip it to face up
+    local_transform.set_scale(Vector3::new(
+        1.,
+        -1.,
+        1.,
     ));
 
     // Create a new entity by bundling the mesh, material, component and transforms together
