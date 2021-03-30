@@ -25,7 +25,7 @@ use amethyst::ecs::prelude::{Entity, World, WorldExt};
 use amethyst::prelude::Builder;
 use amethyst::renderer::SpriteRender;
 use amethyst::renderer::SpriteSheet;
-use rand::{thread_rng, Rng, ThreadRng};
+use rand::prelude::{thread_rng, Rng, ThreadRng};
 
 use crate::components::Asteroid;
 use crate::config::GAME_CONFIGURATION;
